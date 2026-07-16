@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Post a Pet | PetConnect</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <i class="fa-solid fa-paw"></i>
+        <h2>PetConnect</h2>
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="pets.html">Adopt Pets</a>
+        <a href="post-pet.html">Post a Pet</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+    </nav>
+
+</header>
+
+<section class="post-pet-section">
+
+    <div class="post-form">
+
+        <h1>Post Your Pet for Adoption 🐾</h1>
+
+        <p>Fill in the information below to help your pet find a loving home.</p>
+
+        <form>
+
+            <label>Pet Image</label>
+            <input type="file">
+
+            <label>Pet Name</label>
+            <input type="text" placeholder="Enter pet name">
+
+            <label>Pet Category</label>
+            <select>
+                <option>Dog</option>
+                <option>Cat</option>
+                <option>Rabbit</option>
+                <option>Bird</option>
+                <option>Fish</option>
+            </select>
+
+            <label>Breed</label>
+            <input type="text" placeholder="Example: Labrador">
+
+            <label>Age</label>
+            <input type="text" placeholder="Example: 2 Years">
+
+            <label>Gender</label>
+            <select>
+                <option>Male</option>
+                <option>Female</option>
+            </select>
+
+            <label>Vaccinated</label>
+            <select>
+                <option>Yes</option>
+                <option>No</option>
+            </select>
+
+            <label>Location</label>
+            <input type="text" placeholder="Example: Dhaka">
+
+            <label>Contact Number</label>
+            <input type="tel" placeholder="01XXXXXXXXX">
+
+            <label>Description</label>
+
+            <textarea rows="5" placeholder="Describe your pet..."></textarea>
+
+            <button type="submit">
+
+                Post Pet
+
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>

@@ -2,109 +2,187 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <title>PetConnect | Dashboard</title>
 
-<title>User Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-<link rel="stylesheet"
-href="css/style.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
 
 <header>
 
-<div class="logo">
+   
+    <div class="logo">
 
-<h2>PetConnect</h2>
+        <i class="fa-solid fa-paw"></i>
+        <h2>PetConnect</h2>
 
-</div>
+    </div>
 
-<nav>
-
-<a href="index.html">Home</a>
-<a href="pets.html">Adopt</a>
-<a href="login.html">Post a Pet</a>
-<a href="ai.html">Ask Paws</a>
-<a href="shop.html">Shop</a>
-
-</nav>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="pets.html">Adopt</a>
+        <a href="login.html">Post a Pet</a>
+        <a href="ai.html">Ask Paws</a>
+        <a href="shop.html">Shop</a>
+    </nav>
 
 </header>
 
 <section class="dashboard">
 
-<h1>Welcome, Maliha! 🐾</h1>
+    <!-- Welcome Section -->
 
-<div class="profile-card">
+    <div class="welcome-box">
 
-<h2>My Profile</h2>
+        <div>
 
-<p><strong>Name:</strong> Maliha Chowdhury</p>
+            <h4>WELCOME BACK</h4>
 
-<p><strong>Email:</strong> maliha@email.com</p>
+            <h1>Hi, Maliha! 🌸</h1>
 
-<p><strong>Phone:</strong> 01XXXXXXXXX</p>
+            <p>Here's what's happening with your pets.</p>
 
-<p><strong>Location:</strong> Bangladesh</p>
+        </div>
 
-</div>
+        <button class="post-btn">
+            + Post a Pet
+        </button>
 
-<div class="dashboard-grid">
+    </div>
 
-<div class="dashboard-box">
+    <!-- Statistics -->
 
-<h2>My Posted Pets</h2>
+    <div class="stats-grid">
 
-<ul>
+        <div class="stat-card">
+            <h2>3</h2>
+            <p>Active Posts</p>
+        </div>
 
-<li>Bruno (Available)</li>
-<li>Luna (Adopted)</li>
+        <div class="stat-card">
+            <h2>2</h2>
+            <p>Adopted</p>
+        </div>
 
-</ul>
+        <div class="stat-card">
+            <h2>2</h2>
+            <p>Saved Pets</p>
+        </div>
 
-</div>
+        <div class="stat-card">
+            <h2>7</h2>
+            <p>AI Chats</p>
+        </div>
 
-<div class="dashboard-box">
+    </div>
 
-<h2>My Adoption Requests</h2>
+    <!-- My Posts -->
 
-<ul>
+    <h2 class="section-title">My Posts</h2>
 
-<li>Max - Pending</li>
-<li>Snowy - Approved</li>
+    <div class="post-card">
 
-</ul>
+        <div class="post-left">
 
-</div>
+            <img src="images/dog1.jpg" alt="Dog">
 
-</div>
+            <div>
 
-<div class="dashboard-buttons">
+                <h3>Bruno</h3>
 
-<a href="#" class="pink-btn">
+                <p>Dog · Dhaka · Posted 2 days ago</p>
 
-Edit Profile
+            </div>
 
-</a>
+        </div>
 
-<a href="#" class="gray-btn">
+        <button class="mark-btn">
+            Mark Adopted
+        </button>
 
-Settings
+    </div>
 
-</a>
+    <div class="post-card">
 
-<a href="index.html" class="pink-btn">
+        <div class="post-left">
 
-Logout
+            <img src="images/cat1.jpg" alt="Cat">
 
-</a>
+            <div>
 
-</div>
+                <h3>Luna</h3>
+
+                <p>Cat · Chittagong · Posted 5 days ago</p>
+
+            </div>
+
+        </div>
+
+        <button class="mark-btn">
+            Mark Adopted
+        </button>
+
+    </div>
+
+    <div class="post-card">
+
+        <div class="post-left">
+
+            <img src="images/rabbit1.jpg" alt="Rabbit">
+
+            <div>
+
+                <h3>Snowy</h3>
+
+                <p>Rabbit · Sylhet · Posted 1 week ago</p>
+
+            </div>
+
+        </div>
+
+        <button class="mark-btn">
+            Mark Adopted
+        </button>
+
+    </div>
+
+    <!-- Saved for Later -->
+
+    <h2 class="section-title">Saved for Later</h2>
+
+    <div class="saved-grid">
+
+        <div class="saved-card">
+
+            <img src="images/rabbit2.jpg" alt="Rabbit">
+
+            <h3>Cloud</h3>
+
+            <p>Holland Rabbit</p>
+
+        </div>
+
+        <div class="saved-card">
+
+            <img src="images/cat2.jpg" alt="Cat">
+
+            <h3>Domino</h3>
+
+            <p>Tuxedo Cat</p>
+
+        </div>
+
+    </div>
 
 </section>
 

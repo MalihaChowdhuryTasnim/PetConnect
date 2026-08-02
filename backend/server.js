@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
+const petRoutes = require("./routes/petRoutes");
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/", userRoutes);
+app.use("/", petRoutes);
 
 const PORT = 3000;
 

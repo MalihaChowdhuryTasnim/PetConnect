@@ -125,3 +125,55 @@ if (loginForm) {
     });
 
 }
+// Post Pet Form Submission
+const postPetForm = document.getElementById("postPetForm");
+
+if (postPetForm) {
+
+    postPetForm.addEventListener("submit", async function (e) {
+
+        e.preventDefault();
+
+        const petData = {
+            name: document.getElementById("name").value,
+            category: document.getElementById("category").value,
+            breed: document.getElementById("breed").value,
+            age: document.getElementById("age").value,
+            gender: document.getElementById("gender").value,
+            vaccinated: document.getElementById("vaccinated").value,
+            location: document.getElementById("location").value,
+            contact: document.getElementById("contact").value,
+            description: document.getElementById("description").value
+        };
+
+        try {
+
+            const response = await fetch("http://localhost:3000/post-pet", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(petData)
+
+            });
+
+            const data = await response.json();
+
+            alert(data.message);
+
+            postPetForm.reset();
+
+        } catch (error) {
+
+            alert("Error posting pet!");
+
+            console.error(error);
+
+        }
+
+    });
+
+}

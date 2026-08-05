@@ -2,49 +2,92 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport"
-    content="width=device-width, initial-scale=1.0">
+        content="width=device-width, initial-scale=1.0">
 
     <title>PetConnect | Dashboard</title>
 
     <link rel="stylesheet" href="css/style.css">
+
     <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+
 </head>
 
 <body>
+
+<!-- ===============================
+     DASHBOARD PROTECTION
+================================ -->
+
 <script>
+
     const token = localStorage.getItem("token");
 
     if (!token) {
+
         window.location.href = "login.html";
+
     }
+
 </script>
+
+
+<!-- ===============================
+     HEADER
+================================ -->
+
 <header>
 
-   
     <div class="logo">
 
         <i class="fa-solid fa-paw"></i>
+
         <h2>PetConnect</h2>
 
     </div>
 
+
     <nav>
+
         <a href="index.html">Home</a>
+
         <a href="pets.html">Adopt</a>
+
         <a href="post_pet.html">Post a Pet</a>
+
         <a href="ai.html">Ask Paws</a>
+
         <a href="shop.html">Shop</a>
+
     </nav>
+
+
+    <!-- Logout -->
+
+    <button id="logoutBtn" type="button">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Logout
+
+    </button>
 
 </header>
 
+
+<!-- ===============================
+     DASHBOARD
+================================ -->
+
 <section class="dashboard">
+
 
     <!-- Welcome Section -->
 
@@ -54,141 +97,255 @@
 
             <h4>WELCOME BACK</h4>
 
-            <h1>Hi, Maliha! 🌸</h1>
+            <h1 id="welcomeName">
+                Hi! 🌸
+            </h1>
 
-            <p>Here's what's happening with your pets.</p>
+            <p>
+                Here's what's happening with your pets.
+            </p>
 
         </div>
 
-        
-
     </div>
 
-   
+
+    <!-- ===============================
+         STATISTICS
+    ================================= -->
 
     <div class="stats-grid">
 
         <div class="stat-card">
+
             <h2>3</h2>
+
             <p>Active Posts</p>
+
         </div>
 
+
         <div class="stat-card">
+
             <h2>2</h2>
+
             <p>Adopted</p>
+
         </div>
 
+
         <div class="stat-card">
+
             <h2>2</h2>
+
             <p>Saved Pets</p>
+
         </div>
 
+
         <div class="stat-card">
+
             <h2>7</h2>
+
             <p>AI Chats</p>
+
         </div>
 
     </div>
 
-    <!-- My Posts -->
 
-    <h2 class="section-title">My Posts</h2>
+    <!-- ===============================
+         MY POSTS
+    ================================= -->
+
+    <h2 class="section-title">
+        My Posts
+    </h2>
+
 
     <div class="post-card">
 
         <div class="post-left">
 
-            <img src="images/dog1.jpeg" alt="Dog">
+            <img
+                src="images/dog1.jpeg"
+                alt="Dog">
 
             <div>
 
                 <h3>Bruno</h3>
 
-                <p>Dog · Dhaka · Posted 2 days ago</p>
+                <p>
+                    Dog · Dhaka · Posted 2 days ago
+                </p>
 
             </div>
 
         </div>
 
+
         <button class="mark-btn">
+
             Mark Adopted
+
         </button>
 
     </div>
+
 
     <div class="post-card">
 
         <div class="post-left">
 
-            <img src="images/cat1.jpeg" alt="Cat">
+            <img
+                src="images/cat1.jpeg"
+                alt="Cat">
 
             <div>
 
                 <h3>Luna</h3>
 
-                <p>Cat · Chittagong · Posted 5 days ago</p>
+                <p>
+                    Cat · Chittagong · Posted 5 days ago
+                </p>
 
             </div>
 
         </div>
 
+
         <button class="mark-btn">
+
             Mark Adopted
+
         </button>
 
     </div>
+
 
     <div class="post-card">
 
         <div class="post-left">
 
-            <img src="images/rabbit.jpeg" alt="Rabbit">
+            <img
+                src="images/rabbit.jpeg"
+                alt="Rabbit">
 
             <div>
 
                 <h3>Snowy</h3>
 
-                <p>Rabbit · Sylhet · Posted 1 week ago</p>
+                <p>
+                    Rabbit · Sylhet · Posted 1 week ago
+                </p>
 
             </div>
 
         </div>
 
+
         <button class="mark-btn">
+
             Mark Adopted
+
         </button>
 
     </div>
 
-    <!-- Saved for Later -->
 
-    <h2 class="section-title">Saved for Later</h2>
+    <!-- ===============================
+         SAVED FOR LATER
+    ================================= -->
+
+    <h2 class="section-title">
+        Saved for Later
+    </h2>
+
 
     <div class="saved-grid">
 
         <div class="saved-card">
 
-            <img src="images/rabbit1.jpeg" alt="Rabbit">
+            <img
+                src="images/rabbit1.jpeg"
+                alt="Rabbit">
 
             <h3>Cloud</h3>
 
-            <p>Holland Rabbit</p>
+            <p>
+                Holland Rabbit
+            </p>
 
         </div>
 
+
         <div class="saved-card">
 
-            <img src="images/cat2.jpeg" alt="Cat">
+            <img
+                src="images/cat2.jpeg"
+                alt="Cat">
 
             <h3>Domino</h3>
 
-            <p>Tuxedo Cat</p>
+            <p>
+                Tuxedo Cat
+            </p>
 
         </div>
 
     </div>
 
+
 </section>
+
+
+<!-- ===============================
+     DASHBOARD JAVASCRIPT
+================================ -->
+
+<script>
+
+    // Get logged-in user
+    const savedUser =
+        JSON.parse(localStorage.getItem("user"));
+
+
+    // Display user's name
+    if (savedUser) {
+
+        const welcomeName =
+            document.getElementById("welcomeName");
+
+        welcomeName.textContent =
+            "Hi, " + savedUser.name + "! 🌸";
+
+    }
+
+
+    // ===============================
+    // LOGOUT
+    // ===============================
+
+    const logoutBtn =
+        document.getElementById("logoutBtn");
+
+
+    logoutBtn.addEventListener("click", function () {
+
+        // Remove JWT
+        localStorage.removeItem("token");
+
+        // Remove user information
+        localStorage.removeItem("user");
+
+        // Go to login
+        window.location.href =
+            "login.html";
+
+    });
+
+</script>
+
 
 </body>
 

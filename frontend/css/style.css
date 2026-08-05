@@ -1729,3 +1729,35 @@ table{
 .post-form button:hover{
     background:#ff76a1;
 }
+/* ===============================
+   DASHBOARD LOGOUT BUTTON
+================================ */
+
+#logoutBtn {
+    background-color: #f4a7c1;
+    color: #222;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    transition: 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background-color: #ed8fb0;
+    transform: translateY(-2px);
+}
+
+#logoutBtn i {
+    font-size: 14px;
+}

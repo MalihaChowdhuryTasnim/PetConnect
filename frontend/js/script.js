@@ -237,6 +237,22 @@ if (postPetForm) {
 
             e.preventDefault();
 
+            // Get JWT token
+            const token =
+                localStorage.getItem("token");
+
+            // Check login
+            if (!token) {
+
+                alert("Please login first.");
+
+                window.location.href =
+                    "login.html";
+
+                return;
+
+            }
+
 
             const imageInput =
                 document.getElementById("image");
@@ -318,6 +334,14 @@ if (postPetForm) {
 
                         method: "POST",
 
+                        headers: {
+
+                            // Send JWT to backend
+                            "Authorization":
+                                "Bearer " + token
+
+                        },
+
                         body: formData
 
                     }
@@ -336,6 +360,18 @@ if (postPetForm) {
                     postPetForm.reset();
 
                 }
+
+                // Token expired/invalid
+                if (response.status === 401) {
+
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+
+                    window.location.href =
+                        "login.html";
+
+                }
+
 
             } catch (error) {
 

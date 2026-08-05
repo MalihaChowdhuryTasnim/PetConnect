@@ -1761,3 +1761,170 @@ table{
 #logoutBtn i {
     font-size: 14px;
 }
+.mark-btn {
+    background-color: #f7a8c4;
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.mark-btn:hover {
+    background-color: #f28eb2;
+}
+/* =================================
+   NO POSTS MESSAGE
+================================= */
+
+.no-posts {
+    width: 100%;
+    box-sizing: border-box;
+
+    background: #f8d5df;
+
+    border: 1px solid #f0a9bd;
+
+    border-radius: 15px;
+
+    padding: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    color: #555;
+
+    font-size: 18px;
+
+    margin-bottom: 40px;
+}
+
+.no-posts i {
+    color: #d97f9b;
+    font-size: 20px;
+}
+
+
+
+/* =================================
+   MARK ADOPTED BUTTON
+================================= */
+
+.mark-btn {
+
+    background: #f7b6c9;
+
+    color: #ffffff;
+
+    border: none;
+
+    padding: 11px 20px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+}
+
+
+.mark-btn:hover {
+
+    background: #ed8fac;
+
+    transform: translateY(-1px);
+
+}
+
+
+
+/* =================================
+   FOOTER - HOME PAGE STYLE
+================================= */
+
+footer {
+
+    background: #555555;
+
+    color: white;
+
+    text-align: center;
+
+    margin-top: 80px;
+
+    padding: 45px 20px;
+
+}
+
+
+.footer-content {
+
+    max-width: 1100px;
+
+    margin: auto;
+
+}
+
+
+.footer-logo {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.footer-logo i {
+
+    font-size: 22px;
+
+    color: white;
+
+}
+
+
+.footer-logo h3 {
+
+    margin: 0;
+
+    color: #ffb6c9;
+
+    font-size: 32px;
+
+}
+
+
+.footer-content > p {
+
+    font-size: 18px;
+
+    margin: 10px 0;
+
+}
+
+
+.copyright {
+
+    margin-top: 18px !important;
+
+    font-size: 16px !important;
+
+}

@@ -20,11 +20,13 @@
 
 </head>
 
+
 <body>
 
-<!-- ===============================
+
+<!-- =================================
      DASHBOARD PROTECTION
-================================ -->
+================================= -->
 
 <script>
 
@@ -39,9 +41,10 @@
 </script>
 
 
-<!-- ===============================
+
+<!-- =================================
      HEADER
-================================ -->
+================================= -->
 
 <header>
 
@@ -82,14 +85,17 @@
 </header>
 
 
-<!-- ===============================
+
+<!-- =================================
      DASHBOARD
-================================ -->
+================================= -->
 
 <section class="dashboard">
 
 
-    <!-- Welcome Section -->
+    <!-- =================================
+         WELCOME
+    ================================= -->
 
     <div class="welcome-box">
 
@@ -110,188 +116,93 @@
     </div>
 
 
-    <!-- ===============================
+
+    <!-- =================================
          STATISTICS
     ================================= -->
 
     <div class="stats-grid">
 
+
+        <!-- Active Posts -->
+
         <div class="stat-card">
 
-            <h2>3</h2>
+            <h2 id="activePostsCount">
+                0
+            </h2>
 
-            <p>Active Posts</p>
+            <p>
+                Active Posts
+            </p>
 
         </div>
 
 
+        <!-- Adopted -->
+
         <div class="stat-card">
 
-            <h2>2</h2>
+            <h2>
+                0
+            </h2>
 
-            <p>Adopted</p>
+            <p>
+                Adopted
+            </p>
 
         </div>
 
 
+        <!-- Saved Pets -->
+
         <div class="stat-card">
 
-            <h2>2</h2>
+            <h2>
+                0
+            </h2>
 
-            <p>Saved Pets</p>
+            <p>
+                Saved Pets
+            </p>
 
         </div>
 
 
+        <!-- AI Chats -->
+
         <div class="stat-card">
 
-            <h2>7</h2>
+            <h2>
+                0
+            </h2>
 
-            <p>AI Chats</p>
+            <p>
+                AI Chats
+            </p>
 
         </div>
 
     </div>
 
 
-    <!-- ===============================
+
+    <!-- =================================
          MY POSTS
     ================================= -->
 
     <h2 class="section-title">
+
         My Posts
+
     </h2>
 
 
-    <div class="post-card">
+    <div id="myPostsContainer">
 
-        <div class="post-left">
-
-            <img
-                src="images/dog1.jpeg"
-                alt="Dog">
-
-            <div>
-
-                <h3>Bruno</h3>
-
-                <p>
-                    Dog · Dhaka · Posted 2 days ago
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <button class="mark-btn">
-
-            Mark Adopted
-
-        </button>
-
-    </div>
-
-
-    <div class="post-card">
-
-        <div class="post-left">
-
-            <img
-                src="images/cat1.jpeg"
-                alt="Cat">
-
-            <div>
-
-                <h3>Luna</h3>
-
-                <p>
-                    Cat · Chittagong · Posted 5 days ago
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <button class="mark-btn">
-
-            Mark Adopted
-
-        </button>
-
-    </div>
-
-
-    <div class="post-card">
-
-        <div class="post-left">
-
-            <img
-                src="images/rabbit.jpeg"
-                alt="Rabbit">
-
-            <div>
-
-                <h3>Snowy</h3>
-
-                <p>
-                    Rabbit · Sylhet · Posted 1 week ago
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <button class="mark-btn">
-
-            Mark Adopted
-
-        </button>
-
-    </div>
-
-
-    <!-- ===============================
-         SAVED FOR LATER
-    ================================= -->
-
-    <h2 class="section-title">
-        Saved for Later
-    </h2>
-
-
-    <div class="saved-grid">
-
-        <div class="saved-card">
-
-            <img
-                src="images/rabbit1.jpeg"
-                alt="Rabbit">
-
-            <h3>Cloud</h3>
-
-            <p>
-                Holland Rabbit
-            </p>
-
-        </div>
-
-
-        <div class="saved-card">
-
-            <img
-                src="images/cat2.jpeg"
-                alt="Cat">
-
-            <h3>Domino</h3>
-
-            <p>
-                Tuxedo Cat
-            </p>
-
-        </div>
+        <p>
+            Loading your posts...
+        </p>
 
     </div>
 
@@ -299,50 +210,472 @@
 </section>
 
 
-<!-- ===============================
+
+<!-- =================================
+     FOOTER
+================================= -->
+
+<footer>
+
+    <div class="footer-content">
+
+        <div class="footer-logo">
+
+           
+
+            <h3>
+                PetConnect
+            </h3>
+
+        </div>
+
+
+        <p>
+            Adopt • Rescue • Love
+        </p>
+
+
+        <p class="copyright">
+
+            © 2026 PetConnect
+
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =================================
      DASHBOARD JAVASCRIPT
-================================ -->
+================================= -->
 
 <script>
 
-    // Get logged-in user
-    const savedUser =
-        JSON.parse(localStorage.getItem("user"));
+
+// =================================
+// GET SAVED USER
+// =================================
+
+const savedUser =
+    JSON.parse(
+        localStorage.getItem("user")
+    );
 
 
-    // Display user's name
-    if (savedUser) {
 
-        const welcomeName =
-            document.getElementById("welcomeName");
+// =================================
+// DISPLAY USER NAME
+// =================================
 
-        welcomeName.textContent =
-            "Hi, " + savedUser.name + "! 🌸";
+if (savedUser) {
+
+    const welcomeName =
+        document.getElementById(
+            "welcomeName"
+        );
+
+
+    welcomeName.textContent =
+        "Hi, " +
+        savedUser.name +
+        "! 🌸";
+
+}
+
+
+
+// =================================
+// LOAD MY POSTS
+// =================================
+
+async function loadMyPosts() {
+
+
+    const container =
+        document.getElementById(
+            "myPostsContainer"
+        );
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "http://localhost:3000/my-pets",
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    }
+
+                }
+            );
+
+
+
+        // =================================
+        // TOKEN EXPIRED / INVALID
+        // =================================
+
+        if (response.status === 401) {
+
+
+            localStorage.removeItem(
+                "token"
+            );
+
+
+            localStorage.removeItem(
+                "user"
+            );
+
+
+            window.location.href =
+                "login.html";
+
+
+            return;
+
+        }
+
+
+
+        // =================================
+        // GET PET DATA
+        // =================================
+
+        const pets =
+            await response.json();
+
+
+
+        // Remove loading message
+
+        container.innerHTML = "";
+
+
+
+        // =================================
+        // NO POSTS
+        // =================================
+
+        if (!pets.length) {
+
+
+            container.innerHTML = `
+
+                <div class="no-posts">
+
+                   
+
+                    <span>
+                        You have not posted any pets yet.
+                    </span>
+
+                </div>
+
+            `;
+
+
+            document.getElementById(
+                "activePostsCount"
+            ).textContent = "0";
+
+
+            return;
+
+        }
+
+
+
+        // =================================
+        // ACTIVE POST COUNT
+        // =================================
+
+        document.getElementById(
+            "activePostsCount"
+        ).textContent =
+            pets.length;
+
+
+
+        // =================================
+        // CREATE PET CARDS
+        // =================================
+
+        pets.forEach(
+            (pet) => {
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "post-card";
+
+
+
+                // =================================
+                // PET IMAGE
+                // =================================
+
+                let imagePath =
+                    "images/dog1.jpeg";
+
+
+                if (pet.image) {
+
+                    imagePath =
+                        "http://localhost:3000/uploads/" +
+                        pet.image;
+
+                }
+
+
+
+                // =================================
+                // PET CARD
+                // =================================
+
+                card.innerHTML = `
+
+                    <div class="post-left">
+
+                        <img
+                            src="${imagePath}"
+                            alt="${pet.name}"
+                        >
+
+                        <div>
+
+                            <h3>
+                                ${pet.name}
+                            </h3>
+
+                            <p>
+                                ${pet.category}
+                                ·
+                                ${pet.location}
+                            </p>
+
+                            <p>
+                                ${pet.breed}
+                                ·
+                                ${pet.age}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="mark-btn"
+                        type="button"
+                    >
+
+                        Mark Adopted
+
+                    </button>
+
+                `;
+
+
+
+                // =================================
+                // MARK ADOPTED BUTTON
+                // =================================
+
+                const adoptedButton =
+                    card.querySelector(
+                        ".mark-btn"
+                    );
+
+
+                adoptedButton.addEventListener(
+                    "click",
+                    async function () {
+
+
+                        const confirmAdopt =
+                            confirm(
+                                "Are you sure this pet has been adopted?"
+                            );
+
+
+                        if (!confirmAdopt) {
+
+                            return;
+
+                        }
+
+
+
+                        try {
+
+
+                            const deleteResponse =
+                                await fetch(
+                                    "http://localhost:3000/pets/" +
+                                    pet._id,
+                                    {
+
+                                        method: "DELETE",
+
+                                        headers: {
+
+                                            "Authorization":
+                                                "Bearer " +
+                                                token
+
+                                        }
+
+                                    }
+                                );
+
+
+
+                            const data =
+                                await deleteResponse.json();
+
+
+
+                            alert(
+                                data.message
+                            );
+
+
+
+                            // =================================
+                            // SUCCESS
+                            // =================================
+
+                            if (
+                                deleteResponse.ok
+                            ) {
+
+
+                                // Remove card
+
+                                card.remove();
+
+
+                                // Reload dashboard
+
+                                loadMyPosts();
+
+                            }
+
+
+                        } catch (error) {
+
+
+                            console.error(
+                                "Delete error:",
+                                error
+                            );
+
+
+                            alert(
+                                "Unable to mark pet as adopted."
+                            );
+
+                        }
+
+                    }
+                );
+
+
+
+                // Add card to page
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+
+        console.error(
+            "Error loading my pets:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="no-posts">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                <span>
+                    Unable to load your posts.
+                </span>
+
+            </div>
+
+        `;
 
     }
 
-
-    // ===============================
-    // LOGOUT
-    // ===============================
-
-    const logoutBtn =
-        document.getElementById("logoutBtn");
+}
 
 
-    logoutBtn.addEventListener("click", function () {
 
-        // Remove JWT
-        localStorage.removeItem("token");
+// =================================
+// LOAD POSTS
+// =================================
 
-        // Remove user information
-        localStorage.removeItem("user");
+loadMyPosts();
 
-        // Go to login
+
+
+// =================================
+// LOGOUT
+// =================================
+
+const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+
+logoutBtn.addEventListener(
+    "click",
+    function () {
+
+
+        localStorage.removeItem(
+            "token"
+        );
+
+
+        localStorage.removeItem(
+            "user"
+        );
+
+
         window.location.href =
             "login.html";
 
-    });
+    }
+);
+
 
 </script>
 

@@ -15,6 +15,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Allow browser to access uploaded pet images
+app.use("/uploads", express.static("uploads"));
+
 app.use("/", userRoutes);
 app.use("/", petRoutes);
 

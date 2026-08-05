@@ -10,7 +10,8 @@
 
     <link rel="stylesheet" href="css/style.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -29,12 +30,10 @@
     <nav>
         <a href="index.html">Home</a>
         <a href="pets.html">Adopt Pets</a>
-        <a href="post-pet.html">Post a Pet</a>
-        <a href="login.html">Login</a>
-        <a href="register.html">Register</a>
     </nav>
 
 </header>
+
 
 <section class="post-pet-section">
 
@@ -42,68 +41,134 @@
 
         <h1>Post Your Pet for Adoption 🐾</h1>
 
-        <p>Fill in the information below to help your pet find a loving home.</p>
+        <p>
+            Fill in the information below to help your pet
+            find a loving home.
+        </p>
+
 
         <form id="postPetForm">
 
+
+            <!-- Pet Image -->
+
+            <label>Pet Image</label>
+
+            <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                required>
+
+
+            <!-- Pet Name -->
+
             <label>Pet Name</label>
+
             <input
                 type="text"
                 id="name"
                 placeholder="Enter pet name"
                 required>
 
+
+            <!-- Category -->
+
             <label>Pet Category</label>
+
             <select id="category" required>
+
                 <option value="">Select Category</option>
-                <option>Dog</option>
-                <option>Cat</option>
-                <option>Rabbit</option>
-                <option>Bird</option>
-                <option>Fish</option>
+
+                <option value="Dog">Dog</option>
+
+                <option value="Cat">Cat</option>
+
+                <option value="Rabbit">Rabbit</option>
+
+                <option value="Bird">Bird</option>
+
+                <option value="Fish">Fish</option>
+
             </select>
 
+
+            <!-- Breed -->
+
             <label>Breed</label>
+
             <input
                 type="text"
                 id="breed"
                 placeholder="Example: Labrador"
                 required>
 
+
+            <!-- Age -->
+
             <label>Age</label>
+
             <input
                 type="text"
                 id="age"
                 placeholder="Example: 2 Years"
                 required>
 
+
+            <!-- Gender -->
+
             <label>Gender</label>
+
             <select id="gender" required>
+
                 <option value="">Select Gender</option>
-                <option>Male</option>
-                <option>Female</option>
+
+                <option value="Male">Male</option>
+
+                <option value="Female">Female</option>
+
             </select>
+
+
+            <!-- Vaccinated -->
 
             <label>Vaccinated</label>
+
             <select id="vaccinated" required>
+
                 <option value="">Select</option>
-                <option>Yes</option>
-                <option>No</option>
+
+                <option value="Yes">Yes</option>
+
+                <option value="No">No</option>
+
             </select>
 
+
+            <!-- Location -->
+
             <label>Location</label>
+
             <input
                 type="text"
                 id="location"
                 placeholder="Example: Dhaka"
                 required>
 
+
+            <!-- Contact -->
+
             <label>Contact Number</label>
+
             <input
                 type="tel"
                 id="contact"
                 placeholder="01XXXXXXXXX"
                 required>
+
+
+            <!-- Description -->
 
             <label>Description</label>
 
@@ -112,6 +177,9 @@
                 rows="5"
                 placeholder="Describe your pet..."
                 required></textarea>
+
+
+            <!-- Submit -->
 
             <button type="submit">
                 Post Pet
@@ -122,6 +190,7 @@
     </div>
 
 </section>
+
 
 <script src="js/script.js"></script>
 

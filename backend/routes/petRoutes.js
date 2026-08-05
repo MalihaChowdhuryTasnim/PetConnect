@@ -160,6 +160,35 @@ router.get("/my-pets", protect, async (req, res) => {
 
 });
 // ===============================
+// GET SINGLE PET BY ID
+// ===============================
+
+router.get("/pets/:id", async (req, res) => {
+
+    try {
+
+        const pet = await Pet.findById(req.params.id);
+
+        if (!pet) {
+
+            return res.status(404).json({
+                message: "Pet not found!"
+            });
+
+        }
+
+        res.status(200).json(pet);
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message
+        });
+
+    }
+
+});
+// ===============================
 // DELETE / MARK PET AS ADOPTED
 // ===============================
 

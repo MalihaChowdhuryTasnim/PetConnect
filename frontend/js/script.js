@@ -517,3 +517,62 @@ if (petGrid) {
     loadPets();
 
 }
+// ===============================
+// NAVBAR LOGIN / LOGOUT
+// ===============================
+
+// ===============================
+// NAVBAR LOGIN / LOGOUT
+// ===============================
+
+const token = localStorage.getItem("token");
+
+const loginLink = document.getElementById("loginLink");
+const registerLink = document.getElementById("registerLink");
+const dashboardLink = document.getElementById("dashboardLink");
+const logoutBtn = document.getElementById("logoutBtn");
+const postPetLink = document.getElementById("postPetLink");
+
+if (token) {
+
+    // Hide Login & Register
+    if (loginLink) loginLink.style.display = "none";
+    if (registerLink) registerLink.style.display = "none";
+
+    // Show Dashboard & Logout
+    if (dashboardLink) dashboardLink.style.display = "inline-block";
+    if (logoutBtn) logoutBtn.style.display = "inline-block";
+
+    // Post a Pet goes directly
+    if (postPetLink)
+        postPetLink.href = "post_pet.html";
+
+} else {
+
+    // Show Login & Register
+    if (loginLink) loginLink.style.display = "inline-block";
+    if (registerLink) registerLink.style.display = "inline-block";
+
+    // Hide Dashboard & Logout
+    if (dashboardLink) dashboardLink.style.display = "none";
+    if (logoutBtn) logoutBtn.style.display = "none";
+
+    // Post a Pet goes to login
+    if (postPetLink)
+        postPetLink.href = "login.html";
+
+}
+
+// Logout
+if (logoutBtn) {
+
+    logoutBtn.addEventListener("click", function () {
+
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+
+        window.location.href = "login.html";
+
+    });
+
+}

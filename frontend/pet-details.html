@@ -1,86 +1,419 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-    <title>Pet Details</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>PetConnect | Pet Details</title>
 
     <link rel="stylesheet" href="css/style.css">
+
     <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
+
 <body>
+
+
+<!-- ===============================
+     HEADER
+================================ -->
 
 <header>
 
     <div class="logo">
 
         <i class="fa-solid fa-paw"></i>
+
         <h2>PetConnect</h2>
 
     </div>
 
+
     <nav>
 
-        <a href="index.html">Home</a>
-        <a href="pets.html">Adopt Pets</a>
-        <a href="login.html">Post a Pet</a>
-        <a href="login.html">Login</a>
-        <a href="register.html">Register</a>
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="pets.html">
+            Adopt Pets
+        </a>
+
+        <a href="login.html">
+            Post a Pet
+        </a>
+
+        <a href="login.html">
+            Login
+        </a>
+
+        <a href="register.html">
+            Register
+        </a>
 
     </nav>
 
 </header>
 
+
+
+<!-- ===============================
+     PET DETAILS
+================================ -->
+
 <section class="pet-details">
+
+
+    <!-- PET IMAGE -->
 
     <div class="pet-image">
 
-        <img src="images/dog1.jpeg">
+        <img
+            id="petImage"
+            src="images/dog1.jpeg"
+            alt="Pet">
 
     </div>
 
+
+
+    <!-- PET INFORMATION -->
+
     <div class="pet-info">
 
-        <h1>Bruno</h1>
 
-        <p><strong>Breed:</strong> Golden Retriever</p>
+        <h1 id="petName">
+            Loading...
+        </h1>
 
-        <p><strong>Age:</strong> 2 Years</p>
 
-        <p><strong>Gender:</strong> Male</p>
+        <p>
+            <strong>Breed:</strong>
 
-        <p><strong>Vaccinated:</strong> Yes</p>
+            <span id="petBreed">
+                -
+            </span>
+        </p>
 
-        <p><strong>Location:</strong> Dhaka, Bangladesh</p>
+
+        <p>
+            <strong>Age:</strong>
+
+            <span id="petAge">
+                -
+            </span>
+        </p>
+
+
+        <p>
+            <strong>Gender:</strong>
+
+            <span id="petGender">
+                -
+            </span>
+        </p>
+
+
+        <p>
+            <strong>Vaccinated:</strong>
+
+            <span id="petVaccinated">
+                -
+            </span>
+        </p>
+
+
+        <p>
+            <strong>Location:</strong>
+
+            <span id="petLocation">
+                -
+            </span>
+        </p>
+
 
         <p>
 
-        <strong>Description:</strong>
+            <strong>Description:</strong>
 
-        Friendly and playful. Loves children and enjoys outdoor activities.
+            <span id="petDescription">
+                -
+            </span>
 
         </p>
+
 
         <p>
 
-        <strong>Owner:</strong>
+            <strong>Owner:</strong>
 
-        Maliha Chowdhury
+            <span id="petOwner">
+                -
+            </span>
 
         </p>
 
-        <a href="adoption-request.html" class="pink-btn">
 
-    Adopt Now
+        <a
+            href="adoption-request.html"
+            class="pink-btn"
+            id="adoptButton"
+        >
+
+            Adopt Now
 
         </a>
+
 
     </div>
 
 </section>
+
+
+
+<!-- ===============================
+     JAVASCRIPT
+================================ -->
+
+<script>
+
+
+// =================================
+// GET PET ID FROM URL
+// =================================
+
+const urlParams =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const petId =
+    urlParams.get("id");
+
+
+
+// =================================
+// CHECK PET ID
+// =================================
+
+if (!petId) {
+
+    document.getElementById(
+        "petName"
+    ).textContent =
+        "Pet not found.";
+
+} else {
+
+    loadPetDetails();
+
+}
+
+
+
+// =================================
+// LOAD PET DETAILS
+// =================================
+
+async function loadPetDetails() {
+
+    try {
+
+
+        const response =
+            await fetch(
+                "http://localhost:3000/pets/" +
+                petId
+            );
+
+
+        // Pet not found
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Pet not found"
+            );
+
+        }
+
+
+        const pet =
+            await response.json();
+
+
+
+        // =================================
+        // PET NAME
+        // =================================
+
+        document.getElementById(
+            "petName"
+        ).textContent =
+            pet.name;
+
+
+
+        // =================================
+        // PET BREED
+        // =================================
+
+        document.getElementById(
+            "petBreed"
+        ).textContent =
+            pet.breed || "Not specified";
+
+
+
+        // =================================
+        // PET AGE
+        // =================================
+
+        document.getElementById(
+            "petAge"
+        ).textContent =
+            pet.age || "Not specified";
+
+
+
+        // =================================
+        // PET GENDER
+        // =================================
+
+        document.getElementById(
+            "petGender"
+        ).textContent =
+            pet.gender || "Not specified";
+
+
+
+        // =================================
+        // VACCINATED
+        // =================================
+
+        document.getElementById(
+            "petVaccinated"
+        ).textContent =
+            pet.vaccinated || "Not specified";
+
+
+
+        // =================================
+        // LOCATION
+        // =================================
+
+        document.getElementById(
+            "petLocation"
+        ).textContent =
+            pet.location || "Not specified";
+
+
+
+        // =================================
+        // DESCRIPTION
+        // =================================
+
+        document.getElementById(
+            "petDescription"
+        ).textContent =
+            pet.description ||
+            "No description available.";
+
+
+
+        // =================================
+        // OWNER
+        // =================================
+
+        document.getElementById(
+            "petOwner"
+        ).textContent =
+            pet.ownerName ||
+            "PetConnect User";
+
+
+
+        // =================================
+        // PET IMAGE
+        // =================================
+
+        const petImage =
+            document.getElementById(
+                "petImage"
+            );
+
+
+        if (pet.image) {
+
+            petImage.src =
+                "http://localhost:3000/uploads/" +
+                pet.image;
+
+        } else {
+
+            // Fallback image
+
+            if (pet.category === "Cat") {
+
+                petImage.src =
+                    "images/cat1.jpeg";
+
+            } else if (
+                pet.category === "Rabbit"
+            ) {
+
+                petImage.src =
+                    "images/rabbit.jpeg";
+
+            } else {
+
+                petImage.src =
+                    "images/dog1.jpeg";
+
+            }
+
+        }
+
+
+        petImage.alt =
+            pet.name;
+
+
+
+    } catch (error) {
+
+
+        console.error(
+            "Error loading pet details:",
+            error
+        );
+
+
+        document.getElementById(
+            "petName"
+        ).textContent =
+            "Unable to load pet details.";
+
+
+        document.getElementById(
+            "petDescription"
+        ).textContent =
+            "Please go back and try again.";
+
+    }
+
+}
+
+</script>
+
 
 </body>
 

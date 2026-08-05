@@ -138,7 +138,7 @@ if (registerForm) {
 
 
 // ===============================
-// LOGIN
+// LOGIN WITH JWT
 // ===============================
 
 const loginForm =
@@ -163,6 +163,7 @@ if (loginForm) {
             const response = await fetch(
                 "http://localhost:3000/login",
                 {
+
                     method: "POST",
 
                     headers: {
@@ -173,17 +174,36 @@ if (loginForm) {
                         email,
                         password
                     })
+
                 }
             );
 
 
-            const data = await response.json();
+            const data =
+                await response.json();
+
 
             alert(data.message);
 
 
+            // Login successful
             if (response.ok) {
 
+                // Save JWT token
+                localStorage.setItem(
+                    "token",
+                    data.token
+                );
+
+
+                // Save user information
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(data.user)
+                );
+
+
+                // Go to dashboard
                 window.location.href =
                     "dashboard.html";
 
@@ -218,12 +238,10 @@ if (postPetForm) {
             e.preventDefault();
 
 
-            // Get selected image
             const imageInput =
                 document.getElementById("image");
 
 
-            // Check image
             if (
                 !imageInput ||
                 imageInput.files.length === 0
@@ -236,18 +254,16 @@ if (postPetForm) {
             }
 
 
-            // Create FormData
-            const formData = new FormData();
+            const formData =
+                new FormData();
 
 
-            // Add image
             formData.append(
                 "image",
                 imageInput.files[0]
             );
 
 
-            // Add pet information
             formData.append(
                 "name",
                 document.getElementById("name").value
@@ -299,9 +315,11 @@ if (postPetForm) {
                 const response = await fetch(
                     "http://localhost:3000/post-pet",
                     {
+
                         method: "POST",
 
                         body: formData
+
                     }
                 );
 
@@ -383,7 +401,7 @@ if (petGrid) {
                     "images/dog1.jpeg";
 
 
-                // Use category-based fallback
+                // Category fallback images
                 if (pet.category === "Cat") {
 
                     imagePath =
@@ -402,8 +420,7 @@ if (petGrid) {
                 }
 
 
-                // If pet has uploaded image,
-                // use uploaded image
+                // Uploaded image
                 if (pet.image) {
 
                     imagePath =

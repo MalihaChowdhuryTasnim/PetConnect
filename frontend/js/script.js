@@ -1,20 +1,132 @@
 console.log("Welcome to PetConnect!");
 
 
-// ===============================
-// Button Click Animation
-// ===============================
+// ======================================================
+// NAVBAR LOGIN / LOGOUT
+// ======================================================
 
-const buttons = document.querySelectorAll("button");
+const token = localStorage.getItem("token");
 
-buttons.forEach((button) => {
+const loginLink =
+    document.getElementById("loginLink");
+
+const registerLink =
+    document.getElementById("registerLink");
+
+const dashboardLink =
+    document.getElementById("dashboardLink");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+const postPetLink =
+    document.getElementById("postPetLink");
+
+
+// ======================================================
+// USER IS LOGGED IN
+// ======================================================
+
+if (token) {
+
+    // Hide Login
+    if (loginLink) {
+        loginLink.style.display = "none";
+    }
+
+    // Hide Register
+    if (registerLink) {
+        registerLink.style.display = "none";
+    }
+
+    // Show Dashboard
+    if (dashboardLink) {
+        dashboardLink.style.display = "inline-block";
+    }
+
+    // Show Logout
+    if (logoutBtn) {
+        logoutBtn.style.display = "inline-flex";
+    }
+
+    // Post Pet directly
+    if (postPetLink) {
+        postPetLink.href = "post_pet.html";
+    }
+
+}
+
+
+// ======================================================
+// USER IS NOT LOGGED IN
+// ======================================================
+
+else {
+
+    // Show Login
+    if (loginLink) {
+        loginLink.style.display = "inline-block";
+    }
+
+    // Show Register
+    if (registerLink) {
+        registerLink.style.display = "inline-block";
+    }
+
+    // Hide Dashboard
+    if (dashboardLink) {
+        dashboardLink.style.display = "none";
+    }
+
+    // Hide Logout
+    if (logoutBtn) {
+        logoutBtn.style.display = "none";
+    }
+
+    // Post Pet goes to Login
+    if (postPetLink) {
+        postPetLink.href = "login.html";
+    }
+
+}
+
+
+// ======================================================
+// LOGOUT
+// ======================================================
+
+if (logoutBtn) {
+
+    logoutBtn.addEventListener("click", function () {
+
+        localStorage.removeItem("token");
+
+        localStorage.removeItem("user");
+
+        window.location.href = "index.html";
+
+    });
+
+}
+
+
+// ======================================================
+// BUTTON CLICK ANIMATION
+// ======================================================
+
+const buttons =
+    document.querySelectorAll("button");
+
+buttons.forEach(function (button) {
 
     button.addEventListener("click", function () {
 
         button.style.transform = "scale(0.95)";
 
         setTimeout(function () {
+
             button.style.transform = "scale(1)";
+
         }, 150);
 
     });
@@ -22,26 +134,29 @@ buttons.forEach((button) => {
 });
 
 
-// ===============================
-// Page Loaded
-// ===============================
+// ======================================================
+// PAGE LOADED
+// ======================================================
 
 window.addEventListener("load", function () {
 
-    console.log("PetConnect Home Page Loaded Successfully!");
+    console.log(
+        "PetConnect Page Loaded Successfully!"
+    );
 
 });
 
 
-// ===============================
-// AI Assistant
-// ===============================
+// ======================================================
+// AI ASSISTANT
+// ======================================================
 
-const button = document.querySelector(".ai-box button");
+const aiButton =
+    document.querySelector(".ai-box button");
 
-if (button) {
+if (aiButton) {
 
-    button.addEventListener("click", () => {
+    aiButton.addEventListener("click", function () {
 
         const responseText =
             document.querySelector(".ai-response p");
@@ -58,173 +173,208 @@ if (button) {
 }
 
 
-// ===============================
+// ======================================================
 // REGISTER
-// ===============================
+// ======================================================
 
 const registerForm =
     document.getElementById("registerForm");
 
 if (registerForm) {
 
-    registerForm.addEventListener("submit", async (e) => {
+    registerForm.addEventListener(
+        "submit",
+        async function (e) {
 
-        e.preventDefault();
-
-        const name =
-            document.getElementById("name").value;
-
-        const email =
-            document.getElementById("email").value;
-
-        const password =
-            document.getElementById("password").value;
-
-        const confirmPassword =
-            document.getElementById("confirmPassword").value;
+            e.preventDefault();
 
 
-        if (password !== confirmPassword) {
+            const name =
+                document.getElementById("name").value;
 
-            alert("Passwords do not match!");
+            const email =
+                document.getElementById("email").value;
 
-            return;
+            const password =
+                document.getElementById("password").value;
 
-        }
-
-
-        try {
-
-            const response = await fetch(
-                "http://localhost:3000/register",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        name,
-                        email,
-                        password
-                    })
-                }
-            );
+            const confirmPassword =
+                document.getElementById("confirmPassword").value;
 
 
-            const data = await response.json();
+            // Check password
+            if (password !== confirmPassword) {
 
-            alert(data.message);
+                alert("Passwords do not match!");
 
-
-            if (response.ok) {
-
-                window.location.href = "login.html";
+                return;
 
             }
 
-        } catch (error) {
 
-            console.error(error);
+            try {
 
-            alert("Registration failed!");
+                const response =
+                    await fetch(
+                        "http://localhost:3000/register",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body: JSON.stringify({
+
+                                name: name,
+
+                                email: email,
+
+                                password: password
+
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                alert(data.message);
+
+
+                if (response.ok) {
+
+                    window.location.href =
+                        "login.html";
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Registration failed!"
+                );
+
+            }
 
         }
-
-    });
+    );
 
 }
 
 
-// ===============================
+// ======================================================
 // LOGIN WITH JWT
-// ===============================
+// ======================================================
 
 const loginForm =
     document.getElementById("loginForm");
 
 if (loginForm) {
 
-    loginForm.addEventListener("submit", async (e) => {
+    loginForm.addEventListener(
+        "submit",
+        async function (e) {
 
-        e.preventDefault();
-
-
-        const email =
-            document.getElementById("email").value;
-
-        const password =
-            document.getElementById("password").value;
+            e.preventDefault();
 
 
-        try {
+            const email =
+                document.getElementById("email").value;
 
-            const response = await fetch(
-                "http://localhost:3000/login",
-                {
+            const password =
+                document.getElementById("password").value;
 
-                    method: "POST",
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+            try {
 
-                    body: JSON.stringify({
-                        email,
-                        password
-                    })
+                const response =
+                    await fetch(
+                        "http://localhost:3000/login",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body: JSON.stringify({
+
+                                email: email,
+
+                                password: password
+
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                alert(data.message);
+
+
+                if (response.ok) {
+
+                    // Save JWT
+                    localStorage.setItem(
+                        "token",
+                        data.token
+                    );
+
+
+                    // Save user
+                    localStorage.setItem(
+                        "user",
+                        JSON.stringify(data.user)
+                    );
+
+
+                    // Go dashboard
+                    window.location.href =
+                        "dashboard.html";
 
                 }
-            );
-
-
-            const data =
-                await response.json();
-
-
-            alert(data.message);
-
-
-            // Login successful
-            if (response.ok) {
-
-                // Save JWT token
-                localStorage.setItem(
-                    "token",
-                    data.token
-                );
-
-
-                // Save user information
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(data.user)
-                );
-
-
-                // Go to dashboard
-                window.location.href =
-                    "dashboard.html";
 
             }
 
-        } catch (error) {
+            catch (error) {
 
-            console.error(error);
+                console.error(error);
 
-            alert("Login failed!");
+                alert(
+                    "Login failed!"
+                );
+
+            }
 
         }
-
-    });
+    );
 
 }
 
 
-// ===============================
+// ======================================================
 // POST PET WITH IMAGE
-// ===============================
+// ======================================================
 
 const postPetForm =
     document.getElementById("postPetForm");
@@ -237,14 +387,17 @@ if (postPetForm) {
 
             e.preventDefault();
 
-            // Get JWT token
-            const token =
+
+            const currentToken =
                 localStorage.getItem("token");
 
-            // Check login
-            if (!token) {
 
-                alert("Please login first.");
+            // Check login
+            if (!currentToken) {
+
+                alert(
+                    "Please login first."
+                );
 
                 window.location.href =
                     "login.html";
@@ -263,7 +416,9 @@ if (postPetForm) {
                 imageInput.files.length === 0
             ) {
 
-                alert("Please select a pet image.");
+                alert(
+                    "Please select a pet image."
+                );
 
                 return;
 
@@ -285,40 +440,48 @@ if (postPetForm) {
                 document.getElementById("name").value
             );
 
+
             formData.append(
                 "category",
                 document.getElementById("category").value
             );
+
 
             formData.append(
                 "breed",
                 document.getElementById("breed").value
             );
 
+
             formData.append(
                 "age",
                 document.getElementById("age").value
             );
+
 
             formData.append(
                 "gender",
                 document.getElementById("gender").value
             );
 
+
             formData.append(
                 "vaccinated",
                 document.getElementById("vaccinated").value
             );
+
 
             formData.append(
                 "location",
                 document.getElementById("location").value
             );
 
+
             formData.append(
                 "contact",
                 document.getElementById("contact").value
             );
+
 
             formData.append(
                 "description",
@@ -328,24 +491,25 @@ if (postPetForm) {
 
             try {
 
-                const response = await fetch(
-                    "http://localhost:3000/post-pet",
-                    {
+                const response =
+                    await fetch(
+                        "http://localhost:3000/post-pet",
+                        {
 
-                        method: "POST",
+                            method: "POST",
 
-                        headers: {
+                            headers: {
 
-                            // Send JWT to backend
-                            "Authorization":
-                                "Bearer " + token
+                                "Authorization":
+                                    "Bearer " +
+                                    currentToken
 
-                        },
+                            },
 
-                        body: formData
+                            body: formData
 
-                    }
-                );
+                        }
+                    );
 
 
                 const data =
@@ -361,23 +525,31 @@ if (postPetForm) {
 
                 }
 
-                // Token expired/invalid
+
                 if (response.status === 401) {
 
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("user");
+                    localStorage.removeItem(
+                        "token"
+                    );
+
+                    localStorage.removeItem(
+                        "user"
+                    );
 
                     window.location.href =
                         "login.html";
 
                 }
 
+            }
 
-            } catch (error) {
+            catch (error) {
 
                 console.error(error);
 
-                alert("Error posting pet!");
+                alert(
+                    "Error posting pet!"
+                );
 
             }
 
@@ -387,9 +559,9 @@ if (postPetForm) {
 }
 
 
-// ===============================
+// ======================================================
 // LOAD PETS FROM MONGODB
-// ===============================
+// ======================================================
 
 const petGrid =
     document.getElementById("petGrid");
@@ -400,9 +572,10 @@ if (petGrid) {
 
         try {
 
-            const response = await fetch(
-                "http://localhost:3000/pets"
-            );
+            const response =
+                await fetch(
+                    "http://localhost:3000/pets"
+                );
 
 
             const pets =
@@ -412,7 +585,10 @@ if (petGrid) {
             petGrid.innerHTML = "";
 
 
-            if (pets.length === 0) {
+            if (
+                !Array.isArray(pets) ||
+                pets.length === 0
+            ) {
 
                 petGrid.innerHTML =
                     "<p>No pets available for adoption.</p>";
@@ -422,7 +598,7 @@ if (petGrid) {
             }
 
 
-            pets.forEach((pet) => {
+            pets.forEach(function (pet) {
 
                 const petCard =
                     document.createElement("div");
@@ -437,18 +613,28 @@ if (petGrid) {
                     "images/dog1.jpeg";
 
 
-                // Category fallback images
-                if (pet.category === "Cat") {
+                // Category fallback
+                if (
+                    pet.category === "Cat"
+                ) {
 
                     imagePath =
                         "images/cat1.jpeg";
 
-                } else if (pet.category === "Rabbit") {
+                }
+
+                else if (
+                    pet.category === "Rabbit"
+                ) {
 
                     imagePath =
                         "images/rabbit.jpeg";
 
-                } else if (pet.category === "Dog") {
+                }
+
+                else if (
+                    pet.category === "Dog"
+                ) {
 
                     imagePath =
                         "images/dog1.jpeg";
@@ -473,7 +659,9 @@ if (petGrid) {
                         alt="${pet.name}"
                     >
 
-                    <h3>${pet.name}</h3>
+                    <h3>
+                        ${pet.name}
+                    </h3>
 
                     <p>
                         ${pet.breed} • ${pet.age}
@@ -493,12 +681,15 @@ if (petGrid) {
                 `;
 
 
-                petGrid.appendChild(petCard);
+                petGrid.appendChild(
+                    petCard
+                );
 
             });
 
+        }
 
-        } catch (error) {
+        catch (error) {
 
             console.error(
                 "Error loading pets:",
@@ -517,62 +708,375 @@ if (petGrid) {
     loadPets();
 
 }
-// ===============================
-// NAVBAR LOGIN / LOGOUT
-// ===============================
 
-// ===============================
-// NAVBAR LOGIN / LOGOUT
-// ===============================
 
-const token = localStorage.getItem("token");
+// ======================================================
+// DASHBOARD PROTECTION
+// ======================================================
 
-const loginLink = document.getElementById("loginLink");
-const registerLink = document.getElementById("registerLink");
-const dashboardLink = document.getElementById("dashboardLink");
-const logoutBtn = document.getElementById("logoutBtn");
-const postPetLink = document.getElementById("postPetLink");
+const dashboardPage =
+    document.querySelector(".dashboard");
 
-if (token) {
+if (dashboardPage) {
 
-    // Hide Login & Register
-    if (loginLink) loginLink.style.display = "none";
-    if (registerLink) registerLink.style.display = "none";
+    const dashboardToken =
+        localStorage.getItem("token");
 
-    // Show Dashboard & Logout
-    if (dashboardLink) dashboardLink.style.display = "inline-block";
-    if (logoutBtn) logoutBtn.style.display = "inline-block";
 
-    // Post a Pet goes directly
-    if (postPetLink)
-        postPetLink.href = "post_pet.html";
+    // Not logged in
+    if (!dashboardToken) {
 
-} else {
+        window.location.href =
+            "login.html";
 
-    // Show Login & Register
-    if (loginLink) loginLink.style.display = "inline-block";
-    if (registerLink) registerLink.style.display = "inline-block";
-
-    // Hide Dashboard & Logout
-    if (dashboardLink) dashboardLink.style.display = "none";
-    if (logoutBtn) logoutBtn.style.display = "none";
-
-    // Post a Pet goes to login
-    if (postPetLink)
-        postPetLink.href = "login.html";
+    }
 
 }
 
-// Logout
-if (logoutBtn) {
 
-    logoutBtn.addEventListener("click", function () {
+// ======================================================
+// DASHBOARD USER NAME
+// ======================================================
 
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+const welcomeName =
+    document.getElementById("welcomeName");
 
-        window.location.href = "login.html";
+if (welcomeName) {
 
-    });
+    const savedUser =
+        JSON.parse(
+            localStorage.getItem("user")
+        );
+
+
+    if (savedUser) {
+
+        welcomeName.textContent =
+            "Hi, " +
+            savedUser.name +
+            "! 🌸";
+
+    }
+
+}
+
+
+// ======================================================
+// LOAD MY POSTS
+// ======================================================
+
+const myPostsContainer =
+    document.getElementById(
+        "myPostsContainer"
+    );
+
+if (myPostsContainer) {
+
+    async function loadMyPosts() {
+
+        const dashboardToken =
+            localStorage.getItem("token");
+
+
+        if (!dashboardToken) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "http://localhost:3000/my-pets",
+                    {
+
+                        method: "GET",
+
+                        headers: {
+
+                            "Authorization":
+                                "Bearer " +
+                                dashboardToken
+
+                        }
+
+                    }
+                );
+
+
+            // Token expired
+            if (response.status === 401) {
+
+                localStorage.removeItem(
+                    "token"
+                );
+
+                localStorage.removeItem(
+                    "user"
+                );
+
+                window.location.href =
+                    "login.html";
+
+                return;
+
+            }
+
+
+            const pets =
+                await response.json();
+
+
+            myPostsContainer.innerHTML =
+                "";
+
+
+            // No posts
+            if (
+                !Array.isArray(pets) ||
+                pets.length === 0
+            ) {
+
+                myPostsContainer.innerHTML = `
+
+                    <div class="no-posts">
+
+                        <span>
+                            You have not posted any pets yet.
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                const activeCount =
+                    document.getElementById(
+                        "activePostsCount"
+                    );
+
+
+                if (activeCount) {
+
+                    activeCount.textContent =
+                        "0";
+
+                }
+
+
+                return;
+
+            }
+
+
+            // Active post count
+            const activeCount =
+                document.getElementById(
+                    "activePostsCount"
+                );
+
+
+            if (activeCount) {
+
+                activeCount.textContent =
+                    pets.length;
+
+            }
+
+
+            // Create cards
+            pets.forEach(function (pet) {
+
+                const card =
+                    document.createElement("div");
+
+
+                card.className =
+                    "post-card";
+
+
+                // Image
+                let imagePath =
+                    "images/dog1.jpeg";
+
+
+                if (pet.image) {
+
+                    imagePath =
+                        "http://localhost:3000/uploads/" +
+                        pet.image;
+
+                }
+
+
+                card.innerHTML = `
+
+                    <div class="post-left">
+
+                        <img
+                            src="${imagePath}"
+                            alt="${pet.name}"
+                        >
+
+                        <div>
+
+                            <h3>
+                                ${pet.name}
+                            </h3>
+
+                            <p>
+                                ${pet.category}
+                                ·
+                                ${pet.location}
+                            </p>
+
+                            <p>
+                                ${pet.breed}
+                                ·
+                                ${pet.age}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="mark-btn"
+                        type="button"
+                    >
+                        Mark Adopted
+                    </button>
+
+                `;
+
+
+                // Mark adopted
+                const adoptedButton =
+                    card.querySelector(
+                        ".mark-btn"
+                    );
+
+
+                adoptedButton.addEventListener(
+                    "click",
+                    async function () {
+
+                        const confirmAdopt =
+                            confirm(
+                                "Are you sure this pet has been adopted?"
+                            );
+
+
+                        if (!confirmAdopt) {
+
+                            return;
+
+                        }
+
+
+                        try {
+
+                            const deleteResponse =
+                                await fetch(
+                                    "http://localhost:3000/pets/" +
+                                    pet._id,
+                                    {
+
+                                        method: "DELETE",
+
+                                        headers: {
+
+                                            "Authorization":
+                                                "Bearer " +
+                                                dashboardToken
+
+                                        }
+
+                                    }
+                                );
+
+
+                            const data =
+                                await deleteResponse.json();
+
+
+                            alert(
+                                data.message
+                            );
+
+
+                            if (
+                                deleteResponse.ok
+                            ) {
+
+                                // Remove card
+                                card.remove();
+
+
+                                // Reload posts
+                                loadMyPosts();
+
+                            }
+
+                        }
+
+                        catch (error) {
+
+                            console.error(
+                                "Delete error:",
+                                error
+                            );
+
+
+                            alert(
+                                "Unable to mark pet as adopted."
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                myPostsContainer.appendChild(
+                    card
+                );
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Error loading my pets:",
+                error
+            );
+
+
+            myPostsContainer.innerHTML = `
+
+                <div class="no-posts">
+
+                    <span>
+                        Unable to load your posts.
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    loadMyPosts();
 
 }

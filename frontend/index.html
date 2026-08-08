@@ -1,234 +1,415 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PetConnect</title>
+    <meta charset="UTF-8">
 
-<link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>PetConnect</title>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
 </head>
 
+
 <body>
 
-<header>
 
-<div class="logo">
-    <i class="fa-solid fa-paw"></i>
-    <h2>PetConnect</h2>
-</div>
-<nav>
+    <!-- =================================
+     HEADER / NAVBAR
+================================= -->
 
-    <a href="index.html">Home</a>
+    <header>
 
-    <a href="pets.html">Adopt</a>
+        <div class="logo">
 
-    <a href="login.html" id="postPetLink">Post a Pet</a>
+            <i class="fa-solid fa-paw"></i>
 
-    <a href="ai.html">Ask Paws</a>
+            <h2>PetConnect</h2>
 
-    <a href="shop.html">Shop</a>
+        </div>
 
-    <a href="login.html"
-       id="loginLink"
-       class="login-btn">
-       Login
-    </a>
 
-    <a href="register.html"
-       id="registerLink"
-       class="register-btn">
-       Register
-    </a>
+        <nav>
 
+            <a href="index.html">
+                Home
+            </a>
 
-</nav>
+            <a href="pets.html">
+                Adopt
+            </a>
 
-<div>
+            <a href="login.html" id="postPetLink">
+                Post a Pet
+            </a>
 
-    <a class="login-btn" href="login.html">Login</a>
+            <a href="ai.html">
+                Ask Paws
+            </a>
 
-    <a class="register-btn" href="register.html">Register</a>
+            <a href="shop.html">
+                Shop
+            </a>
 
-</div>
 
-</header>
+            <!-- LOGIN -->
 
-<section class="hero">
+            <a href="login.html" id="loginLink" class="login-btn">
 
-<div class="hero-text">
+                Login
 
-<h1>
-Find Your New
-<span>Best Friend</span>
-</h1>
+            </a>
 
-<p>
-Adopt. Love. Care. Repeat.
-</p>
 
-<p>
-Give homeless pets a loving family and help them start a better life.
-</p>
+            <!-- REGISTER -->
 
-<div class="hero-buttons">
+            <a href="register.html" id="registerLink" class="register-btn">
 
-    <a href="pets.html" class="pink-btn">
-        Adopt a Pet
-    </a>
+                Register
 
-    <a href="login.html" class="gray-btn">
-        Post a Pet
-    </a>
+            </a>
 
-</div>
 
-</div>
+            <!-- DASHBOARD -->
 
-<div class="hero-image">
+            <a href="dashboard.html" id="dashboardLink" style="display:none;">
 
-    <img src="images/dog.png" alt="dog">
+                Dashboard
 
-</div>
+            </a>
 
-</section>
 
-<section class="why">
+            <!-- LOGOUT -->
 
-<h2>Why Adopt?</h2>
+            <button id="logoutBtn" type="button" style="display:none;">
 
-<div class="cards">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
 
-<div class="card">
+            </button>
 
-    <i class="fa-solid fa-heart"></i>
+        </nav>
 
-    <h3>Save a Life</h3>
+    </header>
 
-    <p>
-        Every adoption gives a homeless pet another chance.
-    </p>
 
-</div>
 
-<div class="card">
+    <!-- =================================
+     HERO SECTION
+================================= -->
 
-    <i class="fa-solid fa-paw"></i>
+    <section class="hero">
 
-    <h3>Find a Friend</h3>
 
-    <p>
-        Pets bring love and happiness.
-    </p>
+        <div class="hero-text">
 
-</div>
+            <h1>
 
-<div class="card">
+                Find Your New
 
-    <i class="fa-solid fa-shield-dog"></i>
+                <br>
 
-    <h3>Healthy Pets</h3>
+                <span>
+                    Best Friend
+                </span>
 
-    <p>
-        Vaccinated and checked before adoption.
-    </p>
+            </h1>
 
-</div>
 
-<div class="card">
+            <p>
+                Adopt. Love. Care. Repeat.
+            </p>
 
-    <i class="fa-solid fa-house"></i>
 
-    <h3>Happy Home</h3>
+            <p>
 
-    <p>
-        Create a forever home for rescued pets.
-    </p>
+                Give homeless pets a loving family
+                and help them start a better life.
 
-</div>
+            </p>
 
-</div>
 
-</section>
+            <div class="hero-buttons">
 
-<section class="featured">
 
-<h2>Featured Pets</h2>
+                <!-- ADOPT -->
 
-<div class="pet-container">
+                <a href="pets.html" class="pink-btn">
 
-<div class="pet-card">
+                    Adopt a Pet
 
-    <img src="images/dog1.jpeg" alt="dog1">
+                </a>
 
-    <h3>Bruno</h3>
 
-    <p>Dog • 2 Years</p>
-<a href="pet-details.html" class="pet-btn">
+                <!-- POST PET -->
 
-View Details
+                <a href="login.html" class="gray-btn" id="heroPostPetLink">
 
-</a>
-</div>
+                    Post a Pet
 
-<div class="pet-card">
+                </a>
 
-    <img src="images/cat1.jpeg" alt="cat1">
+            </div>
 
-    <h3>Luna</h3>
+        </div>
 
-    <p>Cat • 1 Year</p>
 
-    <a href="pet-details.html" class="pet-btn">
 
-View Details
+        <div class="hero-image">
 
-</a>
+            <img src="images/dog.png" alt="dog">
 
-</div>
+        </div>
 
-<div class="pet-card">
 
-    <img src="images/rabbit.jpeg" alt="rabbit">
+    </section>
 
-    <h3>Snowy</h3>
 
-    <p>Rabbit • 8 Months</p>
 
-   <a href="pet-details.html" class="pet-btn">
+    <!-- =================================
+     WHY PETCONNECT
+================================= -->
 
-View Details
+    <section class="why">
 
-</a>
-</div>
 
-</div>
+        <h2>
+            Why Choose PetConnect?
+        </h2>
 
-</section>
 
-<footer>
+        <div class="cards">
 
-<h3>PetConnect</h3>
 
-<p>
-Adopt • Rescue • Love
-</p>
+            <!-- CARD 1 -->
 
-<p>
-© 2026 PetConnect
-</p>
+            <div class="card">
 
-</footer>
+                <i class="fa-solid fa-heart"></i>
 
-<script src="js/script.js"></script>
+                <h3>
+                    Save a Life
+                </h3>
+
+                <p>
+
+                    Every adoption gives a homeless
+                    pet another chance.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- CARD 2 -->
+
+            <div class="card">
+
+                <i class="fa-solid fa-paw"></i>
+
+                <h3>
+                    Find a Friend
+                </h3>
+
+                <p>
+
+                    Pets bring love and happiness.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- CARD 3 -->
+
+            <div class="card">
+
+                <i class="fa-solid fa-shield-dog"></i>
+
+                <h3>
+                    Healthy Pets
+                </h3>
+
+                <p>
+
+                    Vaccinated and checked
+                    before adoption.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- CARD 4 -->
+
+            <div class="card">
+
+                <i class="fa-solid fa-house"></i>
+
+                <h3>
+                    Happy Home
+                </h3>
+
+                <p>
+
+                    Create a forever home
+                    for rescued pets.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================
+     FEATURED PETS
+================================= -->
+
+    <section class="featured">
+
+
+        <h2>
+            Featured Pets
+        </h2>
+
+
+        <div class="pet-container">
+
+
+            <!-- BRUNO -->
+
+            <div class="pet-card">
+
+                <img src="images/dog1.jpeg" alt="dog1">
+
+                <h3>
+                    Bruno
+                </h3>
+
+                <p>
+                    Dog • 2 Years
+                </p>
+
+                <a href="pet-details.html" class="pet-btn">
+
+                    View Details
+
+                </a>
+
+            </div>
+
+
+
+            <!-- LUNA -->
+
+            <div class="pet-card">
+
+                <img src="images/cat1.jpeg" alt="cat1">
+
+                <h3>
+                    Luna
+                </h3>
+
+                <p>
+                    Cat • 1 Year
+                </p>
+
+                <a href="pet-details.html" class="pet-btn">
+
+                    View Details
+
+                </a>
+
+            </div>
+
+
+
+            <!-- SNOWY -->
+
+            <div class="pet-card">
+
+                <img src="images/rabbit.jpeg" alt="rabbit">
+
+                <h3>
+                    Snowy
+                </h3>
+
+                <p>
+                    Rabbit • 8 Months
+                </p>
+
+                <a href="pet-details.html" class="pet-btn">
+
+                    View Details
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================
+     FOOTER
+================================= -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <div class="footer-logo">
+
+                <i class="fa-solid fa-paw"></i>
+
+                <h3>
+                    PetConnect
+                </h3>
+
+            </div>
+
+
+            <p>
+                Adopt • Rescue • Love
+            </p>
+
+
+            <p class="copyright">
+                © 2026 PetConnect
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =================================
+     JAVASCRIPT
+================================= -->
+
+    <script src="js/script.js"></script>
+
 
 </body>
-</html>
 
+</html>

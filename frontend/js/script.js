@@ -21,6 +21,8 @@ const logoutBtn =
 
 const postPetLink =
     document.getElementById("postPetLink");
+const heroPostPetLink =
+    document.getElementById("heroPostPetLink")
 
 
 // ======================================================
@@ -54,6 +56,9 @@ if (token) {
         postPetLink.href = "post_pet.html";
     }
 
+    if (heroPostPetLink)
+    heroPostPetLink.href = "post_pet.html";
+
 }
 
 
@@ -84,9 +89,11 @@ else {
     }
 
     // Post Pet goes to Login
-    if (postPetLink) {
-        postPetLink.href = "login.html";
-    }
+   if (postPetLink)
+    postPetLink.href = "login.html";
+
+   if (heroPostPetLink)
+    heroPostPetLink.href = "login.html";
 
 }
 
@@ -1078,5 +1085,131 @@ if (myPostsContainer) {
 
 
     loadMyPosts();
+
+}
+// ===============================
+// HOME FEATURED PETS
+// ===============================
+
+const featuredPetContainer =
+    document.getElementById("featuredPetContainer");
+
+if (featuredPetContainer) {
+
+    async function loadFeaturedPets() {
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:3000/pets"
+            );
+
+            const pets = await response.json();
+
+            featuredPetContainer.innerHTML = "";
+
+            if (!pets.length) {
+
+                featuredPetContainer.innerHTML =
+                    "<p>No pets available for adoption.</p>";
+
+                return;
+            }
+
+
+            // Show maximum 3 pets on Home page
+            const featuredPets = pets.slice(0, 3);
+
+
+            featuredPets.forEach((pet) => {
+
+                const petCard =
+                    document.createElement("div");
+
+                petCard.className = "pet-card";
+
+
+                // Default image
+                let imagePath =
+                    "images/dog1.jpeg";
+
+
+                // Category image
+                if (pet.category === "Cat") {
+
+                    imagePath =
+                        "images/cat1.jpeg";
+
+                } else if (pet.category === "Rabbit") {
+
+                    imagePath =
+                        "images/rabbit.jpeg";
+
+                } else if (pet.category === "Dog") {
+
+                    imagePath =
+                        "images/dog1.jpeg";
+
+                }
+
+
+                // Uploaded image
+                if (pet.image) {
+
+                    imagePath =
+                        "http://localhost:3000/uploads/" +
+                        pet.image;
+
+                }
+
+
+                petCard.innerHTML = `
+
+                    <img
+                        src="${imagePath}"
+                        alt="${pet.name}"
+                    >
+
+                    <h3>
+                        ${pet.name}
+                    </h3>
+
+                    <p>
+                        ${pet.category} • ${pet.age}
+                    </p>
+
+                    <a
+                        href="pet-details.html?id=${pet._id}"
+                        class="pet-btn"
+                    >
+                        View Details
+                    </a>
+
+                `;
+
+
+                featuredPetContainer.appendChild(
+                    petCard
+                );
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Error loading featured pets:",
+                error
+            );
+
+            featuredPetContainer.innerHTML =
+                "<p>Unable to load featured pets.</p>";
+
+        }
+
+    }
+
+
+    loadFeaturedPets();
 
 }

@@ -1653,3 +1653,660 @@ if (adoptionRequestForm) {
     );
 
 } 
+// =====================================================
+// DASHBOARD - ADOPTION REQUESTS
+// =====================================================
+
+const ownerRequestsContainer =
+    document.getElementById("ownerRequestsContainer");
+
+const myAdoptionRequestsContainer =
+    document.getElementById("myAdoptionRequestsContainer");
+
+
+// =====================================================
+// LOAD REQUESTS RECEIVED BY PET OWNER
+// =====================================================
+
+async function loadOwnerRequests() {
+
+    if (!ownerRequestsContainer) {
+        return;
+    }
+
+    const token =
+        localStorage.getItem("token");
+
+    if (!token) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:3000/owner-adoption-requests",
+            {
+                method: "GET",
+
+                headers: {
+                    "Authorization":
+                        "Bearer " + token
+                }
+            }
+        );
+
+
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            window.location.href = "login.html";
+
+            return;
+        }
+
+
+        const requests =
+            await response.json();
+
+
+        ownerRequestsContainer.innerHTML = "";
+
+
+        if (!requests.length) {
+
+            ownerRequestsContainer.innerHTML = `
+                <div class="no-posts">
+                    <span>
+                        No adoption requests yet.
+                    </span>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        requests.forEach((request) => {
+
+            const card =
+                document.createElement("div");
+
+            card.className = "post-card";
+
+
+            const petName =
+                request.pet
+                    ? request.pet.name
+                    : "Unknown Pet";
+
+
+            const requesterName =
+                request.requester
+                    ? request.requester.name
+                    : "Unknown User";
+
+
+            const message =
+                request.message || "No message";
+
+
+            const status =
+                request.status || "Pending";
+
+
+            card.innerHTML = `
+
+                <div class="post-left">
+
+                    ${
+                        request.pet && request.pet.image
+                        ?
+                        `
+                        <img
+                            src="http://localhost:3000/uploads/${request.pet.image}"
+                            alt="${petName}"
+                        >
+                        `
+                        :
+                        `
+                        <div>
+                            🐾
+                        </div>
+                        `
+                    }
+
+                    <div>
+
+                        <h3>
+                            ${petName}
+                        </h3>
+
+                        <p>
+                            Requester:
+                            ${requesterName}
+                        </p>
+
+                        <p>
+                            ${message}
+                        </p>
+
+                        <p>
+                            Status:
+                            <strong>
+                                ${status}
+                            </strong>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            // Only show buttons for Pending requests
+
+            if (status === "Pending") {
+
+                const buttons =
+                    document.createElement("div");
+
+                buttons.style.marginTop = "15px";
+
+
+                buttons.innerHTML = `
+
+                    <button
+                        type="button"
+                        class="mark-btn accept-request-btn"
+                    >
+                        Accept
+                    </button>
+
+                    <button
+                        type="button"
+                        class="mark-btn reject-request-btn"
+                    >
+                        Reject
+                    </button>
+
+                `;
+
+
+                card.appendChild(buttons);
+
+
+                // Accept
+
+                const acceptBtn =
+                    buttons.querySelector(
+                        ".accept-request-btn"
+                    );
+
+
+                acceptBtn.addEventListener(
+                    "click",
+                    () => {
+
+                        updateAdoptionRequest(
+                            request._id,
+                            "Accepted"
+                        );
+
+                    }
+                );
+
+
+                // Reject
+
+                const rejectBtn =
+                    buttons.querySelector(
+                        ".reject-request-btn"
+                    );
+
+
+                rejectBtn.addEventListener(
+                    "click",
+                    () => {
+
+                        updateAdoptionRequest(
+                            request._id,
+                            "Rejected"
+                        );
+
+                    }
+                );
+
+            }
+
+
+            ownerRequestsContainer.appendChild(card);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error loading owner requests:",
+            error
+        );
+
+
+        ownerRequestsContainer.innerHTML = `
+            <div class="no-posts">
+                <span>
+                    Unable to load adoption requests.
+                </span>
+            </div>
+        `;
+
+    }
+
+}
+
+
+
+// =====================================================
+// ACCEPT / REJECT ADOPTION REQUEST
+// =====================================================
+
+async function updateAdoptionRequest(
+    requestId,
+    status
+) {
+
+    const token =
+        localStorage.getItem("token");
+
+
+    if (!token) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            `Are you sure you want to ${status.toLowerCase()} this request?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:3000/adoption-request/" +
+                requestId +
+                "/status",
+                {
+
+                    method: "PATCH",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    },
+
+                    body: JSON.stringify({
+
+                        status: status
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        alert(data.message);
+
+
+        if (response.ok) {
+
+            loadOwnerRequests();
+
+            loadMyAdoptionRequests();
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Update request error:",
+            error
+        );
+
+
+        alert(
+            "Unable to update adoption request."
+        );
+
+    }
+
+}
+
+
+
+// =====================================================
+// LOAD MY ADOPTION REQUESTS
+// =====================================================
+
+async function loadMyAdoptionRequests() {
+
+    if (!myAdoptionRequestsContainer) {
+        return;
+    }
+
+
+    const token =
+        localStorage.getItem("token");
+
+
+    if (!token) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:3000/my-adoption-requests",
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    }
+
+                }
+            );
+
+
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        const requests =
+            await response.json();
+
+
+        myAdoptionRequestsContainer.innerHTML =
+            "";
+
+
+        if (!requests.length) {
+
+            myAdoptionRequestsContainer.innerHTML = `
+                <div class="no-posts">
+                    <span>
+                        You have not sent any adoption requests yet.
+                    </span>
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        requests.forEach((request) => {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "post-card";
+
+
+            const petName =
+                request.pet
+                    ? request.pet.name
+                    : "Unknown Pet";
+
+
+            const ownerName =
+                request.owner
+                    ? request.owner.name
+                    : "Unknown Owner";
+
+
+            const status =
+                request.status || "Pending";
+
+
+            const message =
+                request.message || "No message";
+
+
+            card.innerHTML = `
+
+                <div class="post-left">
+
+                    ${
+                        request.pet &&
+                        request.pet.image
+                        ?
+                        `
+                        <img
+                            src="http://localhost:3000/uploads/${request.pet.image}"
+                            alt="${petName}"
+                        >
+                        `
+                        :
+                        `
+                        <div>
+                            🐾
+                        </div>
+                        `
+                    }
+
+                    <div>
+
+                        <h3>
+                            ${petName}
+                        </h3>
+
+                        <p>
+                            Owner:
+                            ${ownerName}
+                        </p>
+
+                        <p>
+                            ${message}
+                        </p>
+
+                        <p>
+                            Status:
+                            <strong>
+                                ${status}
+                            </strong>
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="mark-btn delete-adoption-btn"
+                >
+                    Delete Request
+                </button>
+
+            `;
+
+
+            const deleteBtn =
+                card.querySelector(
+                    ".delete-adoption-btn"
+                );
+
+
+            deleteBtn.addEventListener(
+                "click",
+                () => {
+
+                    deleteMyAdoptionRequest(
+                        request._id
+                    );
+
+                }
+            );
+
+
+            myAdoptionRequestsContainer
+                .appendChild(card);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error loading my adoption requests:",
+            error
+        );
+
+
+        myAdoptionRequestsContainer.innerHTML = `
+            <div class="no-posts">
+                <span>
+                    Unable to load your adoption requests.
+                </span>
+            </div>
+        `;
+
+    }
+
+}
+
+
+
+// =====================================================
+// DELETE MY ADOPTION REQUEST
+// =====================================================
+
+async function deleteMyAdoptionRequest(
+    requestId
+) {
+
+    const token =
+        localStorage.getItem("token");
+
+
+    if (!token) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this adoption request?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:3000/adoption-request/" +
+                requestId,
+                {
+
+                    method: "DELETE",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    }
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        alert(data.message);
+
+
+        if (response.ok) {
+
+            loadMyAdoptionRequests();
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Delete request error:",
+            error
+        );
+
+
+        alert(
+            "Unable to delete adoption request."
+        );
+
+    }
+
+}
+
+
+
+// =====================================================
+// START DASHBOARD REQUEST FUNCTIONS
+// =====================================================
+
+loadOwnerRequests();
+
+loadMyAdoptionRequests();

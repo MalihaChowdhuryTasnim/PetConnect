@@ -228,6 +228,11 @@
 
 </section>
 
+<script>
+    if (!localStorage.getItem("token")) {
+        window.location.href = "login.html";
+    }
+</script>
 
 <script src="js/script.js"></script>
 

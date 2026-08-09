@@ -75,30 +75,51 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <h1>Adoption Request Form</h1>
 
-<form>
+<form id="adoptionRequestForm">
 
-<input type="text" placeholder="Full Name" required>
+    <input
+        type="text"
+        id="fullName"
+        placeholder="Full Name"
+        required
+    >
 
-<input type="email" placeholder="Email Address" required>
+    <input
+        type="email"
+        id="email"
+        placeholder="Email Address"
+        required
+    >
 
-<input type="tel" placeholder="Phone Number" required>
+    <input
+        type="tel"
+        id="phone"
+        placeholder="Phone Number"
+        required
+    >
 
-<input type="text" placeholder="Address" required>
+    <input
+        type="text"
+        id="address"
+        placeholder="Address"
+        required
+    >
 
-<textarea
-placeholder="Why do you want to adopt this pet?"
-rows="5"
-required>
-</textarea>
+    <textarea
+        id="message"
+        placeholder="Why do you want to adopt this pet?"
+        rows="5"
+        required
+    ></textarea>
 
-<button type="submit" class="pink-btn">
-
-Submit Request
-
-</button>
+    <button
+        type="submit"
+        class="pink-btn"
+    >
+        Submit Request
+    </button>
 
 </form>
-
 </section>
 <script src="js/script.js"></script>
 </body>

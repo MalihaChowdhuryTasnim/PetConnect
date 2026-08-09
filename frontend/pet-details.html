@@ -5,15 +5,13 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>PetConnect | Pet Details</title>
 
     <link rel="stylesheet" href="css/style.css">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -21,399 +19,203 @@
 <body>
 
 
-<!-- ===============================
+    <!-- ===============================
      HEADER
 ================================ -->
 
-<header>
+    <header>
 
-    <div class="logo">
+        <div class="logo">
 
-        <i class="fa-solid fa-paw"></i>
+            <i class="fa-solid fa-paw"></i>
 
-        <h2>PetConnect</h2>
+            <h2>PetConnect</h2>
 
-    </div>
-
-
-    <nav>
-
-        <a href="index.html">
-            Home
-        </a>
-
-        <a href="pets.html">
-            Adopt Pets
-        </a>
-
-        <a href="login.html">
-            Post a Pet
-        </a>
-
-        <a href="login.html">
-            Login
-        </a>
-
-        <a href="register.html">
-            Register
-        </a>
-
-    </nav>
-
-</header>
+        </div>
 
 
+        <nav>
 
-<!-- ===============================
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="pets.html">
+                Adopt
+            </a>
+
+            <a href="login.html" id="postPetLink">
+                Post a Pet
+            </a>
+
+            <a href="ai.html">
+                Ask Paws
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+
+            <!-- LOGIN -->
+
+            <a href="login.html" id="loginLink" class="login-btn">
+
+                Login
+
+            </a>
+
+
+            <!-- REGISTER -->
+
+            <a href="register.html" id="registerLink" class="register-btn">
+
+                Register
+
+            </a>
+
+
+            <!-- DASHBOARD -->
+
+            <a href="dashboard.html" id="dashboardLink" style="display:none;">
+
+                Dashboard
+
+            </a>
+
+
+            <!-- LOGOUT -->
+
+            <button id="logoutBtn" type="button" style="display:none;">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+
+            </button>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- ===============================
      PET DETAILS
 ================================ -->
 
-<section class="pet-details">
+    <section class="pet-details">
 
 
-    <!-- PET IMAGE -->
+        <!-- PET IMAGE -->
 
-    <div class="pet-image">
+        <div class="pet-image">
 
-        <img
-            id="petImage"
-            src="images/dog1.jpeg"
-            alt="Pet">
+            <img id="petImage" src="images/dog1.jpeg" alt="Pet">
 
-    </div>
+        </div>
 
 
 
-    <!-- PET INFORMATION -->
+        <!-- PET INFORMATION -->
 
-    <div class="pet-info">
+        <div class="pet-info">
 
 
-        <h1 id="petName">
-            Loading...
-        </h1>
+            <h1 id="petName">
+                Loading...
+            </h1>
 
 
-        <p>
-            <strong>Breed:</strong>
+            <p>
 
-            <span id="petBreed">
-                -
-            </span>
-        </p>
+                <strong>Breed:</strong>
 
+                <span id="petBreed">
+                    -
+                </span>
 
-        <p>
-            <strong>Age:</strong>
+            </p>
 
-            <span id="petAge">
-                -
-            </span>
-        </p>
 
+            <p>
 
-        <p>
-            <strong>Gender:</strong>
+                <strong>Age:</strong>
 
-            <span id="petGender">
-                -
-            </span>
-        </p>
+                <span id="petAge">
+                    -
+                </span>
 
+            </p>
 
-        <p>
-            <strong>Vaccinated:</strong>
 
-            <span id="petVaccinated">
-                -
-            </span>
-        </p>
+            <p>
 
+                <strong>Gender:</strong>
 
-        <p>
-            <strong>Location:</strong>
+                <span id="petGender">
+                    -
+                </span>
 
-            <span id="petLocation">
-                -
-            </span>
-        </p>
+            </p>
 
 
-        <p>
+            <p>
 
-            <strong>Description:</strong>
+                <strong>Vaccinated:</strong>
 
-            <span id="petDescription">
-                -
-            </span>
+                <span id="petVaccinated">
+                    -
+                </span>
 
-        </p>
+            </p>
 
 
-        <p>
+            <p>
 
-            <strong>Owner:</strong>
+                <strong>Location:</strong>
 
-            <span id="petOwner">
-                -
-            </span>
+                <span id="petLocation">
+                    -
+                </span>
 
-        </p>
+            </p>
 
 
-        <a
-            href="adoption-request.html"
-            class="pink-btn"
-            id="adoptButton"
-        >
+            <p>
 
-            Adopt Now
+                <strong>Description:</strong>
 
-        </a>
+                <span id="petDescription">
+                    -
+                </span>
 
+            </p>
 
-    </div>
 
-</section>
+            <!-- OWNER -->
 
+            <p>
 
+                <strong>Owner:</strong>
 
-<!-- ===============================
-     JAVASCRIPT
-================================ -->
+                <span id="petOwner">
+                    -
+                </span>
 
-<script>
+            </p>
 
 
-// =================================
-// GET PET ID FROM URL
-// =================================
+            <a href="#" class="pink-btn" id="adoptButton">
+                Adopt Now
+            </a>
 
-const urlParams =
-    new URLSearchParams(
-        window.location.search
-    );
 
+        </div>
 
-const petId =
-    urlParams.get("id");
+    </section>
 
 
-
-// =================================
-// CHECK PET ID
-// =================================
-
-if (!petId) {
-
-    document.getElementById(
-        "petName"
-    ).textContent =
-        "Pet not found.";
-
-} else {
-
-    loadPetDetails();
-
-}
-
-
-
-// =================================
-// LOAD PET DETAILS
-// =================================
-
-async function loadPetDetails() {
-
-    try {
-
-
-        const response =
-            await fetch(
-                "http://localhost:3000/pets/" +
-                petId
-            );
-
-
-        // Pet not found
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Pet not found"
-            );
-
-        }
-
-
-        const pet =
-            await response.json();
-
-
-
-        // =================================
-        // PET NAME
-        // =================================
-
-        document.getElementById(
-            "petName"
-        ).textContent =
-            pet.name;
-
-
-
-        // =================================
-        // PET BREED
-        // =================================
-
-        document.getElementById(
-            "petBreed"
-        ).textContent =
-            pet.breed || "Not specified";
-
-
-
-        // =================================
-        // PET AGE
-        // =================================
-
-        document.getElementById(
-            "petAge"
-        ).textContent =
-            pet.age || "Not specified";
-
-
-
-        // =================================
-        // PET GENDER
-        // =================================
-
-        document.getElementById(
-            "petGender"
-        ).textContent =
-            pet.gender || "Not specified";
-
-
-
-        // =================================
-        // VACCINATED
-        // =================================
-
-        document.getElementById(
-            "petVaccinated"
-        ).textContent =
-            pet.vaccinated || "Not specified";
-
-
-
-        // =================================
-        // LOCATION
-        // =================================
-
-        document.getElementById(
-            "petLocation"
-        ).textContent =
-            pet.location || "Not specified";
-
-
-
-        // =================================
-        // DESCRIPTION
-        // =================================
-
-        document.getElementById(
-            "petDescription"
-        ).textContent =
-            pet.description ||
-            "No description available.";
-
-
-
-        // =================================
-        // OWNER
-        // =================================
-
-        document.getElementById(
-            "petOwner"
-        ).textContent =
-            pet.ownerName ||
-            "PetConnect User";
-
-
-
-        // =================================
-        // PET IMAGE
-        // =================================
-
-        const petImage =
-            document.getElementById(
-                "petImage"
-            );
-
-
-        if (pet.image) {
-
-            petImage.src =
-                "http://localhost:3000/uploads/" +
-                pet.image;
-
-        } else {
-
-            // Fallback image
-
-            if (pet.category === "Cat") {
-
-                petImage.src =
-                    "images/cat1.jpeg";
-
-            } else if (
-                pet.category === "Rabbit"
-            ) {
-
-                petImage.src =
-                    "images/rabbit.jpeg";
-
-            } else {
-
-                petImage.src =
-                    "images/dog1.jpeg";
-
-            }
-
-        }
-
-
-        petImage.alt =
-            pet.name;
-
-
-
-    } catch (error) {
-
-
-        console.error(
-            "Error loading pet details:",
-            error
-        );
-
-
-        document.getElementById(
-            "petName"
-        ).textContent =
-            "Unable to load pet details.";
-
-
-        document.getElementById(
-            "petDescription"
-        ).textContent =
-            "Please go back and try again.";
-
-    }
-
-}
-
-</script>
-
+    <script src="js/script.js"></script>
 
 </body>
 

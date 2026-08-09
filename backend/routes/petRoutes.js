@@ -120,6 +120,7 @@ router.get("/pets", async (req, res) => {
 
         res.status(200).json(pets);
 
+
     } catch (error) {
 
         res.status(500).json({
@@ -131,6 +132,7 @@ router.get("/pets", async (req, res) => {
     }
 
 });
+
 
 // ===============================
 // GET MY PETS
@@ -141,24 +143,34 @@ router.get("/my-pets", protect, async (req, res) => {
     try {
 
         const pets = await Pet.find({
+
             owner: req.user.id
+
         }).sort({
+
             createdAt: -1
+
         });
 
+
         res.status(200).json(pets);
+
 
     } catch (error) {
 
         console.error(error);
 
         res.status(500).json({
+
             message: error.message
+
         });
 
     }
 
 });
+
+
 // ===============================
 // GET SINGLE PET BY ID
 // ===============================
@@ -167,27 +179,40 @@ router.get("/pets/:id", async (req, res) => {
 
     try {
 
-        const pet = await Pet.findById(req.params.id);
+        // Get pet AND owner's name
+        const pet = await Pet.findById(req.params.id)
+            .populate("owner", "name");
+
 
         if (!pet) {
 
             return res.status(404).json({
+
                 message: "Pet not found!"
+
             });
 
         }
 
+
         res.status(200).json(pet);
+
 
     } catch (error) {
 
+        console.error(error);
+
         res.status(500).json({
+
             message: error.message
+
         });
 
     }
 
 });
+
+
 // ===============================
 // DELETE / MARK PET AS ADOPTED
 // ===============================
@@ -196,28 +221,43 @@ router.delete("/pets/:id", async (req, res) => {
 
     try {
 
-        const pet = await Pet.findById(req.params.id);
+        const pet =
+            await Pet.findById(req.params.id);
+
 
         if (!pet) {
+
             return res.status(404).json({
+
                 message: "Pet not found!"
+
             });
+
         }
+
 
         await Pet.findByIdAndDelete(req.params.id);
 
+
         res.status(200).json({
-            message: "Pet marked as adopted successfully!"
+
+            message:
+                "Pet marked as adopted successfully!"
+
         });
+
 
     } catch (error) {
 
         res.status(500).json({
+
             message: error.message
+
         });
 
     }
 
 });
+
 
 module.exports = router;

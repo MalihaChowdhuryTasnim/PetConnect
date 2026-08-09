@@ -1213,3 +1213,443 @@ if (featuredPetContainer) {
     loadFeaturedPets();
 
 }
+// ===============================
+// PET DETAILS
+// ===============================
+
+const petName = document.getElementById("petName");
+
+if (petName) {
+
+    const urlParams =
+        new URLSearchParams(window.location.search);
+
+    const petId =
+        urlParams.get("id");
+
+
+    if (!petId) {
+
+        petName.textContent = "Pet not found.";
+
+    } else {
+
+        loadPetDetails();
+
+    }
+
+
+    async function loadPetDetails() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "http://localhost:3000/pets/" + petId
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error("Pet not found");
+
+            }
+
+
+            const pet =
+                await response.json();
+
+
+            // ===============================
+            // PET NAME
+            // ===============================
+
+            document.getElementById(
+                "petName"
+            ).textContent =
+                pet.name;
+
+
+            // ===============================
+            // BREED
+            // ===============================
+
+            document.getElementById(
+                "petBreed"
+            ).textContent =
+                pet.breed || "Not specified";
+
+
+            // ===============================
+            // AGE
+            // ===============================
+
+            document.getElementById(
+                "petAge"
+            ).textContent =
+                pet.age || "Not specified";
+
+
+            // ===============================
+            // GENDER
+            // ===============================
+
+            document.getElementById(
+                "petGender"
+            ).textContent =
+                pet.gender || "Not specified";
+
+
+            // ===============================
+            // VACCINATED
+            // ===============================
+
+            document.getElementById(
+                "petVaccinated"
+            ).textContent =
+                pet.vaccinated || "Not specified";
+
+
+            // ===============================
+            // LOCATION
+            // ===============================
+
+            document.getElementById(
+                "petLocation"
+            ).textContent =
+                pet.location || "Not specified";
+
+
+            // ===============================
+            // DESCRIPTION
+            // ===============================
+
+            document.getElementById(
+                "petDescription"
+            ).textContent =
+                pet.description ||
+                "No description available.";
+
+
+            // ===============================
+            // OWNER NAME
+            // ===============================
+
+            document.getElementById(
+                "petOwner"
+            ).textContent =
+                pet.owner?.name ||
+                "PetConnect User";
+
+
+            // ===============================
+            // PET IMAGE
+            // ===============================
+
+            const petImage =
+                document.getElementById("petImage");
+
+
+            if (pet.image) {
+
+                petImage.src =
+                    "http://localhost:3000/uploads/" +
+                    pet.image;
+
+            } else {
+
+                if (pet.category === "Cat") {
+
+                    petImage.src =
+                        "images/cat1.jpeg";
+
+                } else if (
+                    pet.category === "Rabbit"
+                ) {
+
+                    petImage.src =
+                        "images/rabbit.jpeg";
+
+                } else {
+
+                    petImage.src =
+                        "images/dog1.jpeg";
+
+                }
+
+            }
+
+
+            petImage.alt = pet.name;
+
+
+        } catch (error) {
+
+            console.error(
+                "Error loading pet details:",
+                error
+            );
+
+
+            document.getElementById(
+                "petName"
+            ).textContent =
+                "Unable to load pet details.";
+
+
+            document.getElementById(
+                "petDescription"
+            ).textContent =
+                "Please go back and try again.";
+
+        }
+
+    }
+
+}
+// ===============================
+// ADOPT NOW BUTTON
+// ===============================
+
+const adoptButton =
+    document.getElementById("adoptButton");
+
+if (adoptButton) {
+
+    adoptButton.addEventListener("click", function (e) {
+
+        e.preventDefault();
+
+        // Check if user is logged in
+        const token =
+            localStorage.getItem("token");
+
+        // Get current pet ID from URL
+        const params =
+            new URLSearchParams(window.location.search);
+
+        const petId =
+            params.get("id");
+
+        // If pet ID is missing
+        if (!petId) {
+
+            alert("Pet information not found.");
+
+            return;
+
+        }
+
+        // Not logged in → Login
+        if (!token) {
+
+            window.location.href =
+                "login.html?redirect=adoption-request.html?id=" +
+                petId;
+
+            return;
+
+        }
+
+        // Logged in → Adoption Request
+        window.location.href =
+            "adoption-request.html?id=" +
+            petId;
+
+    });
+
+}
+// ===============================
+// ADOPTION REQUEST
+// ===============================
+
+const adoptionRequestForm =
+    document.getElementById("adoptionRequestForm");
+
+if (adoptionRequestForm) {
+
+    adoptionRequestForm.addEventListener(
+        "submit",
+        async function (e) {
+
+            e.preventDefault();
+
+            // ===============================
+            // CHECK LOGIN
+            // ===============================
+
+            const token =
+                localStorage.getItem("token");
+
+            if (!token) {
+
+                alert("Please login first.");
+
+                window.location.href =
+                    "login.html";
+
+                return;
+            }
+
+
+            // ===============================
+            // GET PET ID FROM URL
+            // Example:
+            // adoption-request.html?id=123
+            // ===============================
+
+            const urlParams =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            const petId =
+                urlParams.get("id");
+
+
+            if (!petId) {
+
+                alert("Pet information is missing.");
+
+                return;
+            }
+
+
+            // ===============================
+            // GET FORM DATA
+            // ===============================
+
+            const fullName =
+                document.getElementById("fullName").value.trim();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const phone =
+                document.getElementById("phone").value.trim();
+
+            const address =
+                document.getElementById("address").value.trim();
+
+            const message =
+                document.getElementById("message").value.trim();
+
+
+            // ===============================
+            // CHECK MESSAGE
+            // ===============================
+
+            if (!message) {
+
+                alert("Please write a message.");
+
+                return;
+            }
+
+
+            // ===============================
+            // SEND TO BACKEND
+            // ===============================
+
+            try {
+
+                const response =
+                    await fetch(
+                        "http://localhost:3000/adoption-request",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    "Bearer " + token
+
+                            },
+
+                            body: JSON.stringify({
+
+                                petId: petId,
+
+                                message:
+                                    "Name: " +
+                                    fullName +
+                                    "\nEmail: " +
+                                    email +
+                                    "\nPhone: " +
+                                    phone +
+                                    "\nAddress: " +
+                                    address +
+                                    "\n\nReason:\n" +
+                                    message
+
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                // ===============================
+                // TOKEN INVALID / EXPIRED
+                // ===============================
+
+                if (response.status === 401) {
+
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+
+                    alert("Your session has expired. Please login again.");
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+                }
+
+
+                // ===============================
+                // SHOW BACKEND MESSAGE
+                // ===============================
+
+                alert(data.message);
+
+
+                // ===============================
+                // SUCCESS
+                // ===============================
+
+                if (response.ok) {
+
+                    adoptionRequestForm.reset();
+
+                    // Go back to dashboard
+                    window.location.href =
+                        "dashboard.html";
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Adoption request error:",
+                    error
+                );
+
+                alert(
+                    "Unable to send adoption request."
+                );
+
+            }
+
+        }
+    );
+
+} 

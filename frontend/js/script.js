@@ -570,10 +570,19 @@ if (postPetForm) {
 // LOAD PETS FROM MONGODB
 // ======================================================
 
+   
+             
+ // ======================================================
+// LOAD + SEARCH + FILTER PETS
+// ======================================================
+
 const petGrid =
     document.getElementById("petGrid");
 
 if (petGrid) {
+
+    let allPets = [];
+
 
     async function loadPets() {
 
@@ -585,118 +594,19 @@ if (petGrid) {
                 );
 
 
-            const pets =
-                await response.json();
-
-
-            petGrid.innerHTML = "";
-
-
-            if (
-                !Array.isArray(pets) ||
-                pets.length === 0
-            ) {
-
-                petGrid.innerHTML =
-                    "<p>No pets available for adoption.</p>";
-
-                return;
-
+            if (!response.ok) {
+                throw new Error("Failed to load pets");
             }
 
 
-            pets.forEach(function (pet) {
-
-                const petCard =
-                    document.createElement("div");
+            allPets =
+                await response.json();
 
 
-                petCard.className =
-                    "pet-card";
+            displayPets(allPets);
 
 
-                // Default image
-                let imagePath =
-                    "images/dog1.jpeg";
-
-
-                // Category fallback
-                if (
-                    pet.category === "Cat"
-                ) {
-
-                    imagePath =
-                        "images/cat1.jpeg";
-
-                }
-
-                else if (
-                    pet.category === "Rabbit"
-                ) {
-
-                    imagePath =
-                        "images/rabbit.jpeg";
-
-                }
-
-                else if (
-                    pet.category === "Dog"
-                ) {
-
-                    imagePath =
-                        "images/dog1.jpeg";
-
-                }
-
-
-                // Uploaded image
-                if (pet.image) {
-
-                    imagePath =
-                        "http://localhost:3000/uploads/" +
-                        pet.image;
-
-                }
-
-
-                petCard.innerHTML = `
-
-                    <img
-                        src="${imagePath}"
-                        alt="${pet.name}"
-                    >
-
-                    <h3>
-                        ${pet.name}
-                    </h3>
-
-                    <p>
-                        ${pet.breed} • ${pet.age}
-                    </p>
-
-                    <p>
-                        ${pet.category} • ${pet.location}
-                    </p>
-
-                    <a
-                        href="pet-details.html?id=${pet._id}"
-                        class="pet-btn"
-                    >
-                        View Details
-                    </a>
-
-                `;
-
-
-                petGrid.appendChild(
-                    petCard
-                );
-
-            });
-
-        }
-
-        catch (error) {
+        } catch (error) {
 
             console.error(
                 "Error loading pets:",
@@ -712,9 +622,323 @@ if (petGrid) {
     }
 
 
+    // ======================================================
+    // DISPLAY PETS
+    // ======================================================
+
+    function displayPets(pets) {
+
+        petGrid.innerHTML = "";
+
+
+        if (
+            !Array.isArray(pets) ||
+            pets.length === 0
+        ) {
+
+            petGrid.innerHTML =
+                "<p>No pets available for adoption.</p>";
+
+            return;
+
+        }
+
+
+        pets.forEach(function (pet) {
+
+            const petCard =
+                document.createElement("div");
+
+
+            petCard.className =
+                "pet-card";
+
+
+            let imagePath =
+                "images/dog1.jpeg";
+
+
+            if (
+                pet.category &&
+                pet.category.toLowerCase() === "cat"
+            ) {
+
+                imagePath =
+                    "images/cat1.jpeg";
+
+            }
+
+            else if (
+                pet.category &&
+                pet.category.toLowerCase() === "rabbit"
+            ) {
+
+                imagePath =
+                    "images/rabbit.jpeg";
+
+            }
+
+            else if (
+                pet.category &&
+                pet.category.toLowerCase() === "dog"
+            ) {
+
+                imagePath =
+                    "images/dog1.jpeg";
+
+            }
+
+
+            // Uploaded image from MongoDB
+            if (pet.image) {
+
+                imagePath =
+                    "http://localhost:3000/uploads/" +
+                    pet.image;
+
+            }
+
+
+            petCard.innerHTML = `
+
+                <img
+                    src="${imagePath}"
+                    alt="${pet.name}"
+                >
+
+                <h3>
+                    ${pet.name}
+                </h3>
+
+                <p>
+                    ${pet.breed || "Not specified"}
+                    •
+                    ${pet.age || "Not specified"}
+                </p>
+
+                <p>
+                    ${pet.category || "Pet"}
+                    •
+                    ${pet.location || "Not specified"}
+                </p>
+
+                <a
+                    href="pet-details.html?id=${pet._id}"
+                    class="pet-btn"
+                >
+                    View Details
+                </a>
+
+            `;
+
+
+            petGrid.appendChild(petCard);
+
+        });
+
+    }
+
+
+    // ======================================================
+    // SEARCH
+    // ======================================================
+
+    const searchBox =
+        document.querySelector(".search-box");
+
+
+    const searchInput =
+        searchBox
+            ? searchBox.querySelector("input")
+            : null;
+
+
+    const categorySelect =
+        searchBox
+            ? searchBox.querySelector("select")
+            : null;
+
+
+    const searchButton =
+        searchBox
+            ? searchBox.querySelector("button")
+            : null;
+
+
+    function searchAndFilterPets() {
+
+        const searchText =
+            searchInput
+                ? searchInput.value
+                    .trim()
+                    .toLowerCase()
+                : "";
+
+
+        const selectedCategory =
+            categorySelect
+                ? categorySelect.value
+                    .trim()
+                    .toLowerCase()
+                : "all pets";
+
+
+        const filteredPets =
+            allPets.filter(function (pet) {
+
+
+                // Search name, breed,
+                // category or location
+                const matchesSearch =
+                    !searchText ||
+
+                    (
+                        pet.name &&
+                        pet.name
+                            .toLowerCase()
+                            .includes(searchText)
+                    ) ||
+
+                    (
+                        pet.breed &&
+                        pet.breed
+                            .toLowerCase()
+                            .includes(searchText)
+                    ) ||
+
+                    (
+                        pet.category &&
+                        pet.category
+                            .toLowerCase()
+                            .includes(searchText)
+                    ) ||
+
+                    (
+                        pet.location &&
+                        pet.location
+                            .toLowerCase()
+                            .includes(searchText)
+                    );
+
+
+                // Category filter
+                let matchesCategory =
+                    true;
+
+
+                if (
+                    selectedCategory !==
+                    "all pets"
+                ) {
+
+                    let category =
+                        selectedCategory;
+
+
+                    if (category === "dogs") {
+                        category = "dog";
+                    }
+
+
+                    if (category === "cats") {
+                        category = "cat";
+                    }
+
+
+                    if (category === "rabbits") {
+                        category = "rabbit";
+                    }
+
+
+                    if (category === "birds") {
+                        category = "bird";
+                    }
+
+
+                    matchesCategory =
+                        pet.category &&
+                        pet.category
+                            .toLowerCase() ===
+                        category;
+
+                }
+
+
+                return (
+                    matchesSearch &&
+                    matchesCategory
+                );
+
+            });
+
+
+        displayPets(
+            filteredPets
+        );
+
+    }
+
+
+    // Search button
+    if (searchButton) {
+
+        searchButton.addEventListener(
+            "click",
+            searchAndFilterPets
+        );
+
+    }
+
+    // Search automatically while typing
+if (searchInput) {
+
+    searchInput.addEventListener(
+        "input",
+        searchAndFilterPets
+    );
+
+}
+
+
+    // Press Enter to search
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    event.preventDefault();
+
+                    searchAndFilterPets();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // Category dropdown
+    if (categorySelect) {
+
+        categorySelect.addEventListener(
+            "change",
+            searchAndFilterPets
+        );
+
+    }
+
+
+    // Load pets
     loadPets();
 
 }
+
 
 
 // ======================================================

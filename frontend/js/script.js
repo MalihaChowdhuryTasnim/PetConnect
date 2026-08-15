@@ -1564,7 +1564,69 @@ if (petName) {
             ).textContent =
                 pet.owner?.name ||
                 "PetConnect User";
+            
+            // =====================================
+// HIDE ADOPT BUTTON FOR PET OWNER
+// =====================================
 
+const adoptButton =
+    document.getElementById("adoptButton");
+
+const token =
+    localStorage.getItem("token");
+
+if (
+    adoptButton &&
+    token &&
+    pet.owner
+) {
+
+    try {
+
+        // Get logged-in user information
+        const payload =
+            JSON.parse(
+                atob(
+                    token.split(".")[1]
+                )
+            );
+
+
+        const loggedInUserId =
+            payload.id ||
+            payload._id ||
+            payload.userId;
+
+
+        const petOwnerId =
+            pet.owner._id ||
+            pet.owner;
+
+
+        // If logged-in user owns this pet
+        if (
+            loggedInUserId &&
+            petOwnerId &&
+            loggedInUserId.toString() ===
+            petOwnerId.toString()
+        ) {
+
+            // Hide Adopt Now button
+            adoptButton.style.display =
+                "none";
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Owner check error:",
+            error
+        );
+
+    }
+
+}
 
             // ===============================
             // PET IMAGE

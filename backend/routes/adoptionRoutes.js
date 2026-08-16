@@ -188,7 +188,7 @@ router.get(
 
                 .populate(
                     "pet",
-                    "name category breed age image location"
+                    "name category breed age image location contact"
                 )
 
                 .populate(
@@ -261,7 +261,8 @@ router.get(
             const requests =
                 await AdoptionRequest.find({
 
-                    owner: userId
+                    owner: userId,
+                    status: "Pending"
 
                 })
 

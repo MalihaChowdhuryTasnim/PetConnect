@@ -2041,7 +2041,6 @@ async function loadOwnerRequests() {
             const status =
                 request.status || "Pending";
 
-
             card.innerHTML = `
 
                 <div class="post-left">
@@ -2084,6 +2083,7 @@ async function loadOwnerRequests() {
                                 ${status}
                             </strong>
                         </p>
+                       
 
                     </div>
 
@@ -2399,6 +2399,24 @@ async function loadMyAdoptionRequests() {
                 request.message || "No message";
 
 
+                let ownerContact = "";
+
+if (
+    status === "Accepted" &&
+    request.pet &&
+    request.pet.contact
+) {
+
+    ownerContact = `
+        <p>
+            <strong>Owner Contact:</strong>
+            ${request.pet.contact}
+        </p>
+    `;
+
+}
+
+
             card.innerHTML = `
 
                 <div class="post-left">
@@ -2442,7 +2460,7 @@ async function loadMyAdoptionRequests() {
                                 ${status}
                             </strong>
                         </p>
-
+                    ${ownerContact}
                     </div>
 
                 </div>

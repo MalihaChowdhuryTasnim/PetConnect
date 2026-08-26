@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const petRoutes = require("./routes/petRoutes");
 const adoptionRoutes =  require("./routes/adoptionRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/", userRoutes);
 app.use("/", petRoutes);
 app.use("/", adoptionRoutes);
+app.use("/", aiRoutes);
 
 const PORT = 3000;
 

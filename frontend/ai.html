@@ -3,23 +3,36 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-<title>PetConnect | Ask Paws</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<link rel="stylesheet"
-href="css/style.css">
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>PetConnect | Ask Paws</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
-rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
 
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -27,92 +40,208 @@ rel="stylesheet">
     <div class="logo">
 
         <i class="fa-solid fa-paw"></i>
+
         <h2>PetConnect</h2>
 
     </div>
 
-<nav>
 
-    <a href="index.html">Home</a>
+    <nav>
 
-    <a href="pets.html">Adopt</a>
+        <a href="index.html">
+            Home
+        </a>
 
-    <a href="login.html" id="postPetLink">
-        Post a Pet
-    </a>
 
-    <a href="ai.html">Ask Paws</a>
+        <a href="pets.html">
+            Adopt
+        </a>
 
-    <a href="dashboard.html"
-       id="dashboardLink"
-       style="display:none;">
-        Dashboard
-    </a>
 
-    
-            <button id="logoutBtn" type="button" style="display:none;">
+        <a
+            href="login.html"
+            id="postPetLink"
+        >
+            Post a Pet
+        </a>
 
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
 
-            </button>
+        <a href="ai.html">
+            Ask Paws
+        </a>
 
-    <a href="login.html"
-       id="loginLink"
-       class="login-btn">
-        Login
-    </a>
 
-    <a href="register.html"
-       id="registerLink"
-       class="register-btn">
-        Register
-    </a>
+        <a
+            href="dashboard.html"
+            id="dashboardLink"
+            style="display:none;"
+        >
+            Dashboard
+        </a>
 
-</nav>
+
+        <button
+            id="logoutBtn"
+            type="button"
+            style="display:none;"
+        >
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </button>
+
+
+        <a
+            href="login.html"
+            id="loginLink"
+            class="login-btn"
+        >
+            Login
+        </a>
+
+
+        <a
+            href="register.html"
+            id="registerLink"
+            class="register-btn"
+        >
+            Register
+        </a>
+
+    </nav>
 
 </header>
 
+
+
 <section class="ai-section">
 
-<h1>Ask Paws AI Assistant 🐾</h1>
 
-<p>
-Ask questions about pets and get helpful advice!
-</p>
+    <h1>
+        Ask Paws AI Assistant 🐾
+    </h1>
 
-<div class="ai-box">
 
-<textarea
-placeholder="Example: My cat is not eating..."
-rows="6">
-</textarea>
+    <p>
+        Ask questions about pets and get helpful advice!
+    </p>
 
-<button class="pink-btn">
 
-Ask Paws
 
-</button>
+    <!-- ================================= -->
+    <!-- PAWS CHAT BOX -->
+    <!-- ================================= -->
 
-<div class="ai-response">
+    <div class="ai-box">
 
-<h3>AI Response:</h3>
 
-<p>
+        <!-- CHAT MESSAGES -->
 
-Your AI response will appear here.
+        <div
+            class="chat-messages"
+            id="chatMessages"
+        >
 
-</p>
 
-</div>
+            <!-- Initial Paws message -->
 
-</div>
+            <div class="ai-message">
+
+
+                <div class="message-avatar">
+                    🐾
+                </div>
+
+
+                <div class="message-content">
+
+                    <strong>
+                        Paws
+                    </strong>
+
+
+                    <p>
+                        Hi there! I'm Paws from
+                        PetConnect. How can I help
+                        you with your pet today? 🐾
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================================= -->
+        <!-- CHAT INPUT -->
+        <!-- ================================= -->
+
+        <div class="chat-input-area">
+
+
+            <textarea
+                id="aiInput"
+                placeholder="Message Paws..."
+                rows="1"
+            ></textarea>
+
+
+            <button
+                id="sendAiButton"
+                type="button"
+                aria-label="Send message"
+            >
+
+                <i class="fa-solid fa-paper-plane"></i>
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
 
 </section>
 
+ <footer>
+
+        <div class="footer-content">
+
+            <div class="footer-logo">
+
+
+                <h3>
+                    PetConnect
+                </h3>
+
+            </div>
+
+
+            <p>
+                Adopt • Rescue • Love
+            </p>
+
+
+            <p class="copyright">
+                © 2026 PetConnect
+            </p>
+
+        </div>
+
+    </footer>
+
+
 <script src="js/script.js"></script>
+
 
 </body>
 
 </html>
-

@@ -59,6 +59,16 @@ router.post("/adoption-request", protect, async (req, res) => {
 
         }
 
+        // Pet is already reserved or adopted
+if (pet.adoptionStatus !== "Available") {
+
+    return res.status(400).json({
+        message:
+            "This pet is currently reserved or already adopted."
+    });
+
+}
+
 
         // Owner cannot request own pet
         if (
@@ -201,7 +211,31 @@ router.get(
                 });
 
 
-            return res.status(200).json(requests);
+            // Only expose the owner's contact info once
+            // this specific request has been Accepted —
+            // strip it out for Pending/Rejected requests
+            // even though it was populated above.
+            const sanitizedRequests =
+                requests.map((request) => {
+
+                    const requestObj =
+                        request.toObject();
+
+                    if (
+                        requestObj.status !== "Accepted" &&
+                        requestObj.pet
+                    ) {
+
+                        delete requestObj.pet.contact;
+
+                    }
+
+                    return requestObj;
+
+                });
+
+
+            return res.status(200).json(sanitizedRequests);
 
 
         } catch (error) {
@@ -381,12 +415,71 @@ router.patch(
             }
 
 
-            adoptionRequest.status =
-                status;
+           adoptionRequest.status = status;
 
 
-            await adoptionRequest.save();
+// =====================================
+// IF ACCEPTED → PET BECOMES RESERVED
+// =====================================
 
+if (status === "Accepted") {
+
+    const pet =
+        await Pet.findById(
+            adoptionRequest.pet
+        );
+
+    if (!pet) {
+
+        return res.status(404).json({
+            message: "Pet not found."
+        });
+
+    }
+
+
+    // Pet must still be available
+    if (
+         pet.adoptionStatus &&
+    pet.adoptionStatus !==
+    "Available"
+    ) {
+
+        return res.status(400).json({
+            message:
+                "This pet is no longer available."
+        });
+
+    }
+
+
+    pet.adoptionStatus =
+        "Reserved";
+
+    await pet.save();
+
+
+    // Reject other pending requests
+    await AdoptionRequest.updateMany(
+        {
+            pet: pet._id,
+            _id: {
+                $ne:
+                    adoptionRequest._id
+            },
+            status: "Pending"
+        },
+        {
+            $set: {
+                status: "Rejected"
+            }
+        }
+    );
+
+}
+
+
+await adoptionRequest.save();
 
             return res.status(200).json({
 
@@ -478,11 +571,34 @@ router.delete(
 
             }
 
+// If an accepted request is deleted,
+// make the pet available again.
 
-            await AdoptionRequest.findByIdAndDelete(
-                requestId
-            );
+if (
+    adoptionRequest.status ===
+    "Accepted"
+) {
 
+    const pet =
+        await Pet.findById(
+            adoptionRequest.pet
+        );
+
+    if (pet) {
+
+        pet.adoptionStatus =
+            "Available";
+
+        await pet.save();
+
+    }
+
+}
+
+
+await AdoptionRequest.findByIdAndDelete(
+    requestId
+);
 
             return res.status(200).json({
 

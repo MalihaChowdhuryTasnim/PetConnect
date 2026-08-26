@@ -154,31 +154,346 @@ window.addEventListener("load", function () {
 });
 
 
-// ======================================================
-// AI ASSISTANT
-// ======================================================
+// =========================================
+// ASK PAWS CHAT
+// =========================================
 
-const aiButton =
-    document.querySelector(".ai-box button");
+const sendAiButton =
+    document.getElementById("sendAiButton");
 
-if (aiButton) {
+const aiInput =
+    document.getElementById("aiInput");
 
-    aiButton.addEventListener("click", function () {
+const chatMessages =
+    document.getElementById("chatMessages");
 
-        const responseText =
-            document.querySelector(".ai-response p");
 
-        if (responseText) {
+if (
+    sendAiButton &&
+    aiInput &&
+    chatMessages
+) {
 
-            responseText.innerText =
-                "Cats, dogs, and rabbits require proper care. If your pet seems sick, consult a veterinarian.";
+
+    // =====================================
+    // ADD USER MESSAGE
+    // =====================================
+
+    function addUserMessage(message) {
+
+        const messageDiv =
+            document.createElement("div");
+
+        messageDiv.className =
+            "user-message";
+
+
+        messageDiv.innerHTML = `
+
+            <div class="message-content">
+
+                <p>${message}</p>
+
+            </div>
+
+        `;
+
+
+        chatMessages.appendChild(
+            messageDiv
+        );
+
+
+        chatMessages.scrollTop =
+            chatMessages.scrollHeight;
+
+    }
+
+
+
+    // =====================================
+    // ADD PAWS MESSAGE
+    // =====================================
+
+    function addPawsMessage(message) {
+
+        const messageDiv =
+            document.createElement("div");
+
+        messageDiv.className =
+            "ai-message";
+
+
+        const avatar =
+            document.createElement("div");
+
+        avatar.className =
+            "message-avatar";
+
+        avatar.textContent =
+            "🐾";
+
+
+        const content =
+            document.createElement("div");
+
+        content.className =
+            "message-content";
+
+
+        const name =
+            document.createElement("strong");
+
+        name.textContent =
+            "Paws";
+
+
+        const text =
+            document.createElement("p");
+
+        text.textContent =
+            message;
+
+
+        content.appendChild(name);
+
+        content.appendChild(text);
+
+
+        messageDiv.appendChild(avatar);
+
+        messageDiv.appendChild(content);
+
+
+        chatMessages.appendChild(
+            messageDiv
+        );
+
+
+        chatMessages.scrollTop =
+            chatMessages.scrollHeight;
+
+    }
+
+
+
+    // =====================================
+    // THINKING MESSAGE
+    // =====================================
+
+    function showThinking() {
+
+        const thinking =
+            document.createElement("div");
+
+        thinking.className =
+            "typing-message";
+
+        thinking.id =
+            "pawsThinking";
+
+
+        thinking.innerHTML = `
+
+            <div class="message-avatar">
+                🐾
+            </div>
+
+            <div class="typing-dots">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+        `;
+
+
+        chatMessages.appendChild(
+            thinking
+        );
+
+
+        chatMessages.scrollTop =
+            chatMessages.scrollHeight;
+
+    }
+
+
+
+    // =====================================
+    // REMOVE THINKING MESSAGE
+    // =====================================
+
+    function removeThinking() {
+
+        const thinking =
+            document.getElementById(
+                "pawsThinking"
+            );
+
+
+        if (thinking) {
+
+            thinking.remove();
 
         }
 
-    });
+    }
+
+
+
+    // =====================================
+    // SEND MESSAGE
+    // =====================================
+
+    async function sendMessage() {
+
+        const question =
+            aiInput.value.trim();
+
+
+        if (!question) {
+
+            return;
+
+        }
+
+
+        // Show user's message
+        addUserMessage(
+            question
+        );
+
+
+        // Clear input
+        aiInput.value = "";
+
+
+        // Disable button while waiting
+        sendAiButton.disabled =
+            true;
+
+
+        // Show Paws thinking
+        showThinking();
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "http://localhost:3000/ask-ai",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                question:
+                                    question
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            removeThinking();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    "Unable to get AI response."
+                );
+
+            }
+
+
+            addPawsMessage(
+                data.answer ||
+                "Sorry, Paws could not answer that."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Ask Paws error:",
+                error
+            );
+
+
+            removeThinking();
+
+
+            addPawsMessage(
+                "Sorry, Paws is currently unavailable. Please try again."
+            );
+
+        }
+
+
+        sendAiButton.disabled =
+            false;
+
+
+        aiInput.focus();
+
+    }
+
+
+
+    // =====================================
+    // SEND BUTTON CLICK
+    // =====================================
+
+    sendAiButton.addEventListener(
+        "click",
+        sendMessage
+    );
+
+
+
+    // =====================================
+    // ENTER TO SEND
+    // SHIFT + ENTER = NEW LINE
+    // =====================================
+
+    aiInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                sendMessage();
+
+            }
+
+        }
+    );
 
 }
-
 
 // ======================================================
 // REGISTER
@@ -1145,6 +1460,22 @@ if (myPostsContainer) {
                 }
 
 
+                // Only a Reserved pet (i.e. one
+                // with an accepted request) can be
+                // marked as Adopted.
+                const markAdoptedButtonHtml =
+                    pet.adoptionStatus === "Reserved"
+                        ? `
+                    <button
+                        class="mark-btn"
+                        type="button"
+                    >
+                        Mark Adopted
+                    </button>
+                        `
+                        : "";
+
+
                 card.innerHTML = `
 
                     <div class="post-left">
@@ -1172,39 +1503,138 @@ if (myPostsContainer) {
                                 ${pet.age}
                             </p>
 
+                            <p>
+                                Status: ${pet.adoptionStatus || "Available"}
+                            </p>
+
                         </div>
 
                     </div>
 
 
-                    <button
-                        class="mark-btn"
-                        type="button"
-                    >
-                        Mark Adopted
-                    </button>
+                    <div class="post-actions">
+
+                        ${markAdoptedButtonHtml}
+
+                        <button
+                            class="delete-btn"
+                            type="button"
+                        >
+                            Delete Post
+                        </button>
+
+                    </div>
 
                 `;
 
 
-                // Mark adopted
+                // Mark adopted (only present when Reserved)
                 const adoptedButton =
                     card.querySelector(
                         ".mark-btn"
                     );
 
 
-                adoptedButton.addEventListener(
+                if (adoptedButton) {
+
+                    adoptedButton.addEventListener(
+                        "click",
+                        async function () {
+
+                            const confirmAdopt =
+                                confirm(
+                                    "Are you sure this pet has been adopted?"
+                                );
+
+
+                            if (!confirmAdopt) {
+
+                                return;
+
+                            }
+
+
+                            try {
+
+                                const adoptResponse =
+                                    await fetch(
+                                        "http://localhost:3000/pets/" +
+                                        pet._id +
+                                        "/adopt",
+                                        {
+
+                                            method: "PATCH",
+
+                                            headers: {
+
+                                                "Authorization":
+                                                    "Bearer " +
+                                                    dashboardToken
+
+                                            }
+
+                                        }
+                                    );
+
+
+                                const data =
+                                    await adoptResponse.json();
+
+
+                                alert(
+                                    data.message
+                                );
+
+
+                                if (
+                                    adoptResponse.ok
+                                ) {
+
+                                    // Reload posts
+                                    loadMyPosts();
+
+                                }
+
+                            }
+
+                            catch (error) {
+
+                                console.error(
+                                    "Mark adopted error:",
+                                    error
+                                );
+
+
+                                alert(
+                                    "Unable to mark pet as adopted."
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                // Delete post
+                const deleteButton =
+                    card.querySelector(
+                        ".delete-btn"
+                    );
+
+
+                deleteButton.addEventListener(
                     "click",
                     async function () {
 
-                        const confirmAdopt =
+                        const confirmDelete =
                             confirm(
-                                "Are you sure this pet has been adopted?"
+                                "Delete this pet post? This cannot be undone, and any adoption requests for it will also be removed."
                             );
 
 
-                        if (!confirmAdopt) {
+                        if (!confirmDelete) {
 
                             return;
 
@@ -1266,7 +1696,7 @@ if (myPostsContainer) {
 
 
                             alert(
-                                "Unable to mark pet as adopted."
+                                "Unable to delete pet post."
                             );
 
                         }
@@ -1575,6 +2005,8 @@ const adoptButton =
 const token =
     localStorage.getItem("token");
 
+let isPetOwner = false;
+
 if (
     adoptButton &&
     token &&
@@ -1611,6 +2043,8 @@ if (
             petOwnerId.toString()
         ) {
 
+            isPetOwner = true;
+
             // Hide Adopt Now button
             adoptButton.style.display =
                 "none";
@@ -1623,6 +2057,187 @@ if (
             "Owner check error:",
             error
         );
+
+    }
+
+}
+
+    // =====================================
+// PET ADOPTION STATUS
+// =====================================
+// Runs for EVERY visitor (logged in or not),
+// so guests never see a live "Adopt Now" on a
+// Reserved/Adopted pet.
+// =====================================
+
+if (adoptButton && !isPetOwner) {
+
+    let myRequestStatus = null;
+
+    // =====================================
+    // GET MY REQUESTS
+    // =====================================
+
+    if (token) {
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:3000/my-adoption-requests",
+                {
+                    method: "GET",
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token,
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+
+            if (response.ok) {
+
+                const requests =
+                    await response.json();
+
+
+                // Find request for THIS pet
+                const myRequest =
+                    requests.find(
+                        request => {
+
+                            if (!request.pet) {
+                                return false;
+                            }
+
+
+                            const requestPetId =
+                                request.pet._id ||
+                                request.pet;
+
+
+                            const currentPetId =
+                                pet._id;
+
+
+                            return String(
+                                requestPetId
+                            ) === String(
+                                currentPetId
+                            );
+
+                        }
+                    );
+
+
+                if (myRequest) {
+
+                    myRequestStatus =
+                        myRequest.status;
+
+                }
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Unable to check adoption request:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // =====================================
+    // ACCEPTED REQUEST
+    // =====================================
+
+    if (
+        myRequestStatus ===
+        "Accepted"
+    ) {
+
+        adoptButton.textContent =
+            "Request Accepted";
+
+        adoptButton.style.pointerEvents =
+            "none";
+
+        adoptButton.style.opacity =
+            "0.7";
+
+    }
+
+
+    // =====================================
+    // PENDING REQUEST
+    // =====================================
+
+    else if (
+        myRequestStatus ===
+        "Pending"
+    ) {
+
+        adoptButton.textContent =
+            "Request Pending";
+
+        adoptButton.style.pointerEvents =
+            "none";
+
+        adoptButton.style.opacity =
+            "0.7";
+
+    }
+
+
+    // =====================================
+    // RESERVED BY SOMEONE ELSE
+    // =====================================
+
+    else if (
+        pet.adoptionStatus ===
+        "Reserved"
+    ) {
+
+        adoptButton.textContent =
+            "Reserved / Adoption in Progress";
+
+        adoptButton.style.pointerEvents =
+            "none";
+
+        adoptButton.style.opacity =
+            "0.7";
+
+    }
+
+
+    // =====================================
+    // ADOPTED
+    // =====================================
+
+    else if (
+        pet.adoptionStatus ===
+        "Adopted"
+    ) {
+
+        adoptButton.style.display =
+            "none";
+
+    }
+
+
+    // =====================================
+    // AVAILABLE
+    // =====================================
+
+    else {
+
+        adoptButton.textContent =
+            "Adopt Now";
 
     }
 

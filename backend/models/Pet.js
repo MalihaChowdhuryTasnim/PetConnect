@@ -53,10 +53,16 @@ const petSchema = new mongoose.Schema({
         required: true
     },
 
-    image: {
-        type: String,
-        required: false
-    }
+image: {
+    type: String,
+    required: false
+},
+
+adoptionStatus: {
+    type: String,
+    enum: ["Available", "Reserved", "Adopted"],
+    default: "Available"
+}
 
 }, {
     timestamps: true

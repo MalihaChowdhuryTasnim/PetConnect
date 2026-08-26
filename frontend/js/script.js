@@ -43,7 +43,44 @@ if (token) {
 
     // Show Dashboard
     if (dashboardLink) {
+
         dashboardLink.style.display = "inline-block";
+
+
+        // If the logged-in user is an admin,
+        // send them to the admin dashboard
+        // instead of the regular user dashboard.
+        try {
+
+            const savedUser =
+                localStorage.getItem("user");
+
+            if (savedUser) {
+
+                const currentUser =
+                    JSON.parse(savedUser);
+
+                if (currentUser.role === "admin") {
+
+                    dashboardLink.href =
+                        "admin-dashboard.html";
+
+                    dashboardLink.textContent =
+                        "Admin Dashboard";
+
+                }
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Dashboard link role check error:",
+                error
+            );
+
+        }
+
     }
 
     // Show Logout
@@ -2062,6 +2099,54 @@ if (
 
 }
 
+
+// =====================================
+// HIDE ADOPT BUTTON FOR ADMIN ACCOUNTS
+// =====================================
+// Admins manage the platform, they don't
+// adopt pets, so the button is hidden
+// whenever an admin is logged in.
+// =====================================
+
+let isAdminUser = false;
+
+if (
+    adoptButton &&
+    token
+) {
+
+    try {
+
+        const savedUser =
+            localStorage.getItem("user");
+
+        if (savedUser) {
+
+            const currentUser =
+                JSON.parse(savedUser);
+
+            if (currentUser.role === "admin") {
+
+                isAdminUser = true;
+
+                adoptButton.style.display =
+                    "none";
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Admin check error:",
+            error
+        );
+
+    }
+
+}
+
     // =====================================
 // PET ADOPTION STATUS
 // =====================================
@@ -2070,7 +2155,7 @@ if (
 // Reserved/Adopted pet.
 // =====================================
 
-if (adoptButton && !isPetOwner) {
+if (adoptButton && !isPetOwner && !isAdminUser) {
 
     let myRequestStatus = null;
 
@@ -2707,7 +2792,10 @@ async function loadOwnerRequests() {
             `;
 
 
-            // Only show buttons for Pending requests
+            // Pending requests get Accept/Reject.
+            // Accepted requests get Cancel Reservation,
+            // so the owner isn't stuck if the accepted
+            // requester never deletes their request.
 
             if (status === "Pending") {
 
@@ -2782,6 +2870,48 @@ async function loadOwnerRequests() {
 
             }
 
+            else if (status === "Accepted") {
+
+                const buttons =
+                    document.createElement("div");
+
+                buttons.style.marginTop = "15px";
+
+
+                buttons.innerHTML = `
+
+                    <button
+                        type="button"
+                        class="delete-btn cancel-reservation-btn"
+                    >
+                        Cancel Reservation
+                    </button>
+
+                `;
+
+
+                card.appendChild(buttons);
+
+
+                const cancelBtn =
+                    buttons.querySelector(
+                        ".cancel-reservation-btn"
+                    );
+
+
+                cancelBtn.addEventListener(
+                    "click",
+                    () => {
+
+                        cancelReservation(
+                            request._id
+                        );
+
+                    }
+                );
+
+            }
+
 
             ownerRequestsContainer.appendChild(card);
 
@@ -2803,6 +2933,92 @@ async function loadOwnerRequests() {
                 </span>
             </div>
         `;
+
+    }
+
+}
+
+
+
+// =====================================================
+// OWNER CANCELS AN ACCEPTED RESERVATION
+// =====================================================
+
+async function cancelReservation(requestId) {
+
+    const token =
+        localStorage.getItem("token");
+
+
+    if (!token) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Cancel this reservation? The pet will become available for adoption again."
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:3000/adoption-request/" +
+                requestId +
+                "/cancel-reservation",
+                {
+
+                    method: "PATCH",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    }
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        alert(data.message);
+
+
+        if (response.ok) {
+
+            loadOwnerRequests();
+
+            loadMyAdoptionRequests();
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Cancel reservation error:",
+            error
+        );
+
+        alert(
+            "Unable to cancel reservation."
+        );
 
     }
 
@@ -3229,3 +3445,690 @@ async function deleteMyAdoptionRequest(
 loadOwnerRequests();
 
 loadMyAdoptionRequests();
+
+// ======================================================
+// ADMIN DASHBOARD PROTECTION
+// ======================================================
+
+if (
+    window.location.pathname.endsWith(
+        "admin-dashboard.html"
+    )
+) {
+
+    const adminToken =
+        localStorage.getItem("token");
+
+    const savedUser =
+        localStorage.getItem("user");
+
+
+    // No login
+    if (
+        !adminToken ||
+        !savedUser
+    ) {
+
+        window.location.replace(
+            "admin-login.html"
+        );
+
+    } else {
+
+        try {
+
+            const user =
+                JSON.parse(savedUser);
+
+
+            // Logged-in user is NOT admin
+            if (
+                user.role !== "admin"
+            ) {
+
+                alert(
+                    "You are not authorized to access the admin panel."
+                );
+
+
+                window.location.replace(
+                    "admin-login.html"
+                );
+
+            } else {
+
+                // Passed the client-side check —
+                // load the real dashboard data.
+                // (The backend re-checks role on
+                // every /admin/* call regardless.)
+
+                loadAdminOverview();
+                loadAdminPets();
+                loadAdminUsers();
+
+            }
+
+        } catch (error) {
+
+            localStorage.removeItem(
+                "token"
+            );
+
+            localStorage.removeItem(
+                "user"
+            );
+
+
+            window.location.replace(
+                "admin-login.html"
+            );
+
+        }
+
+    }
+
+}
+
+
+// ======================================================
+// ADMIN: LOAD OVERVIEW STATS
+// ======================================================
+
+async function loadAdminOverview() {
+
+    const adminToken =
+        localStorage.getItem("token");
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:3000/admin/overview",
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + adminToken
+
+                    }
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Admin overview error:",
+                data.message
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "statTotalPets"
+        ).textContent =
+            data.totalPets;
+
+        document.getElementById(
+            "statAvailablePets"
+        ).textContent =
+            data.availablePets;
+
+        document.getElementById(
+            "statAdoptedPets"
+        ).textContent =
+            data.adoptedPets;
+
+        document.getElementById(
+            "statTotalUsers"
+        ).textContent =
+            data.totalUsers;
+
+
+    } catch (error) {
+
+        console.error(
+            "Admin overview error:",
+            error
+        );
+
+    }
+
+}
+
+
+// ======================================================
+// ADMIN: LOAD PET LISTINGS
+// ======================================================
+
+async function loadAdminPets() {
+
+    const adminToken =
+        localStorage.getItem("token");
+
+    const table =
+        document.getElementById("adminPetsTable");
+
+    const emptyRow =
+        document.getElementById("adminPetsEmptyRow");
+
+    if (!table) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:3000/admin/pets",
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + adminToken
+
+                    }
+
+                }
+            );
+
+
+        const pets =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Admin pets error:",
+                pets.message
+            );
+
+            return;
+
+        }
+
+
+        // Remove old rows (keep header row + empty-state row)
+        table.querySelectorAll(
+            ".admin-pet-row"
+        ).forEach(row => row.remove());
+
+
+        if (pets.length === 0) {
+
+            emptyRow.style.display = "";
+            return;
+
+        }
+
+        emptyRow.style.display = "none";
+
+
+        pets.forEach(pet => {
+
+            const row =
+                document.createElement("tr");
+
+            row.className =
+                "admin-pet-row";
+
+            row.innerHTML = `
+                <td>${pet.name}</td>
+                <td>${pet.category}</td>
+                <td>${pet.location}</td>
+                <td>${pet.owner?.email || "Unknown"}</td>
+                <td>${pet.adoptionStatus}</td>
+                <td>
+                    <button class="delete-btn" type="button">
+                        Delete
+                    </button>
+                </td>
+            `;
+
+            table.appendChild(row);
+
+
+            // DELETE PET (admin override)
+            const deleteButton =
+                row.querySelector(".delete-btn");
+
+            deleteButton.addEventListener(
+                "click",
+                async function () {
+
+                    const confirmDelete =
+                        confirm(
+                            "Delete this pet post? This cannot be undone."
+                        );
+
+                    if (!confirmDelete) {
+                        return;
+                    }
+
+                    try {
+
+                        const deleteResponse =
+                            await fetch(
+                                "http://localhost:3000/admin/pets/" +
+                                pet._id,
+                                {
+
+                                    method: "DELETE",
+
+                                    headers: {
+
+                                        "Authorization":
+                                            "Bearer " + adminToken
+
+                                    }
+
+                                }
+                            );
+
+                        const data =
+                            await deleteResponse.json();
+
+                        alert(data.message);
+
+                        if (deleteResponse.ok) {
+
+                            row.remove();
+                            loadAdminOverview();
+
+                        }
+
+                    } catch (error) {
+
+                        console.error(
+                            "Admin delete pet error:",
+                            error
+                        );
+
+                        alert(
+                            "Unable to delete pet post."
+                        );
+
+                    }
+
+                }
+            );
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Admin pets error:",
+            error
+        );
+
+    }
+
+}
+
+
+// ======================================================
+// ADMIN: LOAD USERS + BAN / UNBAN
+// ======================================================
+
+async function loadAdminUsers() {
+
+    const adminToken =
+        localStorage.getItem("token");
+
+    const table =
+        document.getElementById("adminUsersTable");
+
+    const emptyRow =
+        document.getElementById("adminUsersEmptyRow");
+
+    if (!table) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:3000/admin/users",
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + adminToken
+
+                    }
+
+                }
+            );
+
+
+        const users =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Admin users error:",
+                users.message
+            );
+
+            return;
+
+        }
+
+
+        table.querySelectorAll(
+            ".admin-user-row"
+        ).forEach(row => row.remove());
+
+
+        if (users.length === 0) {
+
+            emptyRow.style.display = "";
+            return;
+
+        }
+
+        emptyRow.style.display = "none";
+
+
+        users.forEach(user => {
+
+            const row =
+                document.createElement("tr");
+
+            row.className =
+                "admin-user-row";
+
+            const statusLabel =
+                user.banned ? "Banned" : "Active";
+
+            const statusClass =
+                user.banned ?
+                    "status-banned" :
+                    "status-active";
+
+            const actionLabel =
+                user.banned ? "Unban" : "Ban";
+
+            const actionClass =
+                user.banned ?
+                    "unban-btn" :
+                    "ban-btn";
+
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>
+                    <span class="status-badge ${statusClass}">
+                        ${statusLabel}
+                    </span>
+                </td>
+                <td>
+                    <button class="${actionClass}" type="button">
+                        ${actionLabel}
+                    </button>
+                </td>
+            `;
+
+            table.appendChild(row);
+
+
+            // BAN / UNBAN USER
+            const actionButton =
+                row.querySelector(
+                    "." + actionClass
+                );
+
+            actionButton.addEventListener(
+                "click",
+                async function () {
+
+                    const confirmMessage =
+                        user.banned ?
+                            "Unban this user?" :
+                            "Ban this user? They will not be able to log in.";
+
+                    const confirmAction =
+                        confirm(confirmMessage);
+
+                    if (!confirmAction) {
+                        return;
+                    }
+
+                    try {
+
+                        const banResponse =
+                            await fetch(
+                                "http://localhost:3000/admin/users/" +
+                                user._id +
+                                "/ban",
+                                {
+
+                                    method: "PATCH",
+
+                                    headers: {
+
+                                        "Authorization":
+                                            "Bearer " + adminToken
+
+                                    }
+
+                                }
+                            );
+
+                        const data =
+                            await banResponse.json();
+
+                        alert(data.message);
+
+                        if (banResponse.ok) {
+
+                            loadAdminUsers();
+
+                        }
+
+                    } catch (error) {
+
+                        console.error(
+                            "Admin ban user error:",
+                            error
+                        );
+
+                        alert(
+                            "Unable to update user status."
+                        );
+
+                    }
+
+                }
+            );
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Admin users error:",
+            error
+        );
+
+    }
+
+}
+// ======================================================
+// ADMIN LOGIN
+// ======================================================
+
+const adminLoginForm =
+    document.getElementById("adminLoginForm");
+
+
+if (adminLoginForm) {
+
+    adminLoginForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            const email =
+                document.getElementById(
+                    "adminEmail"
+                ).value.trim();
+
+
+            const password =
+                document.getElementById(
+                    "adminPassword"
+                ).value;
+
+
+            const message =
+                document.getElementById(
+                    "adminLoginMessage"
+                );
+
+
+            const button =
+                document.getElementById(
+                    "adminLoginButton"
+                );
+
+
+            button.disabled = true;
+
+            button.textContent =
+                "Checking...";
+
+
+            message.textContent = "";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "http://localhost:3000/login",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                email: email,
+
+                                password: password
+
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                // Login failed
+                if (!response.ok) {
+
+                    message.textContent =
+                        data.message ||
+                        "Invalid email or password.";
+
+                    return;
+
+                }
+
+
+                // =====================================
+                // IMPORTANT:
+                // USER MUST BE ADMIN
+                // =====================================
+
+                if (
+                    !data.user ||
+                    data.user.role !== "admin"
+                ) {
+
+                    message.textContent =
+                        "You are not authorized to access the admin panel.";
+
+                    return;
+
+                }
+
+
+                // =====================================
+                // ADMIN LOGIN SUCCESS
+                // =====================================
+
+                localStorage.setItem(
+                    "token",
+                    data.token
+                );
+
+
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(data.user)
+                );
+
+
+                window.location.href =
+                    "admin-dashboard.html";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Admin login error:",
+                    error
+                );
+
+
+                message.textContent =
+                    "Unable to connect to the server.";
+
+            } finally {
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Login as Admin";
+
+            }
+
+        }
+    );
+
+}

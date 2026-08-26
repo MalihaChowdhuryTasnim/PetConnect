@@ -38,13 +38,13 @@
 
     <div>
 
-        <a class="admin-btn" href="#">
+        <a class="admin-btn" href="admin-dashboard.html">
             Admin
         </a>
 
-        <a class="login-btn" href="index.html">
+        <button id="logoutBtn" type="button">
             Admin Logout
-        </a>
+        </button>
 
     </div>
 
@@ -65,34 +65,29 @@
 
         <div class="stat-card">
             <h3>Total Pets</h3>
-            <p>3</p>
+            <p id="statTotalPets">-</p>
         </div>
 
         <div class="stat-card">
             <h3>Available</h3>
-            <p>3</p>
+            <p id="statAvailablePets">-</p>
         </div>
 
         <div class="stat-card">
             <h3>Adopted</h3>
-            <p>0</p>
+            <p id="statAdoptedPets">-</p>
         </div>
 
         <div class="stat-card">
             <h3>Total Users</h3>
-            <p>12</p>
-        </div>
-
-        <div class="stat-card">
-            <h3>Shop Products</h3>
-            <p>15</p>
+            <p id="statTotalUsers">-</p>
         </div>
 
     </div>
 
     <h2>Pet Listings</h2>
 
-    <table>
+    <table id="adminPetsTable">
 
         <tr>
 
@@ -105,119 +100,42 @@
 
         </tr>
 
-        <tr>
+        <!-- Rows are injected here by js/script.js -->
 
-            <td>Bruno</td>
-            <td>Dog</td>
-            <td>Dhaka</td>
-            <td>maliha@email.com</td>
-            <td>Available</td>
+        <tr id="adminPetsEmptyRow" style="display:none;">
 
-            <td>
-
-                <button class="toggle-btn">
-                    Toggle
-                </button>
-
-                <button class="delete-btn">
-                    Delete
-                </button>
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>Luna</td>
-            <td>Cat</td>
-            <td>Chittagong</td>
-            <td>demo@email.com</td>
-            <td>Available</td>
-
-            <td>
-
-                <button class="toggle-btn">
-                    Toggle
-                </button>
-
-                <button class="delete-btn">
-                    Delete
-                </button>
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>Snowy</td>
-            <td>Rabbit</td>
-            <td>Sylhet</td>
-            <td>test@email.com</td>
-            <td>Available</td>
-
-            <td>
-
-                <button class="toggle-btn">
-                    Toggle
-                </button>
-
-                <button class="delete-btn">
-                    Delete
-                </button>
-
+            <td colspan="6">
+                No pets posted yet.
             </td>
 
         </tr>
 
     </table>
 
-    <h2>Management Panel</h2>
+    <h2>Registered Users</h2>
 
-    <div class="management-grid">
+    <table id="adminUsersTable">
 
-        <div class="management-card">
+        <tr>
 
-            <i class="fa-solid fa-paw"></i>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Actions</th>
 
-            <h3>Manage Pets</h3>
+        </tr>
 
-            <p>Add or delete pets.</p>
+        <!-- Rows are injected here by js/script.js -->
 
-        </div>
+        <tr id="adminUsersEmptyRow" style="display:none;">
 
-        <div class="management-card">
+            <td colspan="4">
+                No registered users yet.
+            </td>
 
-            <i class="fa-solid fa-users"></i>
+        </tr>
 
-            <h3>Manage Users</h3>
-
-            <p>View registered users.</p>
-
-        </div>
-
-        <div class="management-card">
-
-            <i class="fa-solid fa-cart-shopping"></i>
-
-            <h3>Manage Shop</h3>
-
-            <p>Add, edit and delete products.</p>
-
-        </div>
-
-        <div class="management-card">
-
-            <i class="fa-solid fa-envelope"></i>
-
-            <h3>Adoption Requests</h3>
-
-            <p>Approve or reject requests.</p>
-
-        </div>
-
-    </div>
+    </table>
 
 </section>
 
@@ -229,7 +147,8 @@
 
 </footer>
 
+<script src="js/script.js"></script>
+
 </body>
 
 </html>
-

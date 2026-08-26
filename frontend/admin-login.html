@@ -4,61 +4,89 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>PetConnect | Admin Login</title>
 
-<link rel="stylesheet"
-href="css/style.css">
+<link
+    rel="stylesheet"
+    href="css/style.css"
+>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
-rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+>
 
 </head>
 
+
 <body>
+
 
 <div class="login-container">
 
-<div class="login-card">
+    <div class="login-card">
 
-<h2>Admin Login</h2>
+        <h2>Admin Login</h2>
 
-<p>Only administrators can access this page.</p>
+        <p>
+            Only administrators can access this page.
+        </p>
 
-<form action="admin-dashboard.html">
 
-<input
-type="email"
-placeholder="Admin Email"
-required>
+        <form id="adminLoginForm">
 
-<input
-type="password"
-placeholder="Password"
-required>
+            <input
+                type="email"
+                id="adminEmail"
+                placeholder="Admin Email"
+                required
+            >
 
-<button type="submit">
 
-Login as Admin
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="Password"
+                required
+            >
 
-</button>
 
-</form>
+            <button
+                type="submit"
+                id="adminLoginButton"
+            >
+                Login as Admin
+            </button>
 
-<a class="back-home"
-href="index.html">
 
-← Back to Home
+            <p
+                id="adminLoginMessage"
+                class="admin-login-message"
+            ></p>
 
-</a>
+        </form>
+
+
+        <a
+            class="back-home"
+            href="index.html"
+        >
+            ← Back to Home
+        </a>
+
+    </div>
 
 </div>
 
-</div>
+
+<script src="js/script.js"></script>
 
 </body>
 
 </html>
-

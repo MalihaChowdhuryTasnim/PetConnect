@@ -7,6 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 const petRoutes = require("./routes/petRoutes");
 const adoptionRoutes =  require("./routes/adoptionRoutes");
 const aiRoutes = require("./routes/aiRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use("/", userRoutes);
 app.use("/", petRoutes);
 app.use("/", adoptionRoutes);
 app.use("/", aiRoutes);
+app.use("/", adminRoutes);
 
 const PORT = 3000;
 

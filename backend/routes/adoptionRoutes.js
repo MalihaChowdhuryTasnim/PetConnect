@@ -296,7 +296,9 @@ router.get(
                 await AdoptionRequest.find({
 
                     owner: userId,
-                    status: "Pending"
+                    status: {
+                        $in: ["Pending", "Accepted"]
+                    }
 
                 })
 
@@ -518,7 +520,133 @@ await adoptionRequest.save();
 
 
 // =====================================
-// 5. DELETE MY ADOPTION REQUEST
+// 5. OWNER CANCELS AN ACCEPTED RESERVATION
+// =====================================
+// If the accepted requester never deletes
+// their own request, the owner would
+// otherwise have no way to free up the pet.
+// This lets the owner release the reservation
+// themselves: the request moves to Rejected
+// and the pet goes back to Available.
+// =====================================
+
+router.patch(
+    "/adoption-request/:id/cancel-reservation",
+    protect,
+    async (req, res) => {
+
+        try {
+
+            const requestId =
+                req.params.id;
+
+            const userId =
+                req.user._id || req.user.id;
+
+
+            const adoptionRequest =
+                await AdoptionRequest.findById(
+                    requestId
+                );
+
+
+            if (!adoptionRequest) {
+
+                return res.status(404).json({
+
+                    message:
+                        "Adoption request not found."
+
+                });
+
+            }
+
+
+            // Only pet owner can cancel the reservation
+            if (
+                !adoptionRequest.owner ||
+                adoptionRequest.owner.toString() !==
+                userId.toString()
+            ) {
+
+                return res.status(403).json({
+
+                    message:
+                        "You are not allowed to change this request."
+
+                });
+
+            }
+
+
+            // Can only cancel a reservation that is
+            // currently Accepted
+            if (adoptionRequest.status !== "Accepted") {
+
+                return res.status(400).json({
+
+                    message:
+                        "Only an accepted request can have its reservation cancelled."
+
+                });
+
+            }
+
+
+            adoptionRequest.status = "Rejected";
+
+            await adoptionRequest.save();
+
+
+            const pet =
+                await Pet.findById(
+                    adoptionRequest.pet
+                );
+
+            if (pet) {
+
+                pet.adoptionStatus = "Available";
+
+                await pet.save();
+
+            }
+
+
+            return res.status(200).json({
+
+                message:
+                    "Reservation cancelled. The pet is available again."
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Cancel reservation error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                message:
+                    "Unable to cancel reservation.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+    }
+);
+
+
+
+// =====================================
+// 6. DELETE MY ADOPTION REQUEST
 // =====================================
 // Only requester can delete
 // =====================================

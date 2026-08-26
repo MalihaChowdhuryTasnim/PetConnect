@@ -98,6 +98,18 @@ router.post("/login", async (req, res) => {
         }
 
 
+        // Banned users cannot log in
+        if (user.banned) {
+
+            return res.status(403).json({
+
+                message: "Your account has been banned by the admin."
+
+            });
+
+        }
+
+
         const isMatch =
             await bcrypt.compare(
                 password,

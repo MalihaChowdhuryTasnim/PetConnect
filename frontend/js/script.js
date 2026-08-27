@@ -608,7 +608,9 @@ if (registerForm) {
 
                                 email: email,
 
-                                password: password
+                                password: password,
+
+                                phone: phone
 
                             })
 
@@ -795,9 +797,18 @@ if (loginForm) {
                     );
 
 
-                    // Go dashboard
+                    // Go back to where the user came from
+                    // (e.g. adoption-request.html?id=123),
+                    // or dashboard.html by default
+                    const redirectTarget =
+                        new URLSearchParams(
+                            window.location.search
+                        ).get("redirect");
+
                     window.location.href =
-                        "dashboard.html";
+                        redirectTarget
+                            ? decodeURIComponent(redirectTarget)
+                            : "dashboard.html";
 
                 } else {
 
@@ -2537,8 +2548,10 @@ if (adoptButton) {
         if (!token) {
 
             window.location.href =
-                "login.html?redirect=adoption-request.html?id=" +
-                petId;
+                "login.html?redirect=" +
+                encodeURIComponent(
+                    "adoption-request.html?id=" + petId
+                );
 
             return;
 

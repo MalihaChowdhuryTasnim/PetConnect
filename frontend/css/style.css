@@ -55,7 +55,7 @@ nav a:hover{
     border-radius:30px;
     border:2px solid #ff9dbb;
     color:#ff7fa6;
-    margin-right:10px;
+    margin-right: -5px;
     transition:.3s;
 }
 
@@ -80,6 +80,12 @@ nav a:hover{
 
     background:#ff7fa6;
 
+}
+
+.nav-actions{
+    display:flex;
+    align-items:center;
+    gap:15px;
 }
 
 .hero{
@@ -157,12 +163,6 @@ nav a:hover{
 
 }
 
-.pink-btn:hover{
-
-    background:#ff7fa6;
-
-}
-
 .gray-btn{
 
     margin-left:15px;
@@ -182,12 +182,6 @@ nav a:hover{
     cursor:pointer;
 
     transition:.3s;
-
-}
-
-.gray-btn:hover{
-
-    background:#555;
 
 }
 
@@ -228,6 +222,14 @@ header{
 nav{
 
     margin:20px 0;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+}
+
+.nav-actions{
 
     flex-wrap:wrap;
 
@@ -528,6 +530,12 @@ html{
 }
 
 nav{
+
+    gap:15px;
+
+}
+
+.nav-actions{
 
     gap:15px;
 
@@ -1182,12 +1190,6 @@ width:100%;
 
 }
 
-.dashboard{
-
-    padding:60px;
-
-}
-
 .dashboard h1{
 
     text-align:center;
@@ -1342,32 +1344,11 @@ width:100%;
 
 }
 
-.stat-card{
-
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 5px 10px
-    rgba(0,0,0,0.1);
-
-}
-
 .stat-card p{
 
     color:#ff8fb1;
     font-size:40px;
     font-weight:bold;
-
-}
-
-table{
-
-    width:100%;
-    margin-top:30px;
-    border-collapse:collapse;
-    background:white;
-    border-radius:15px;
-    overflow:hidden;
 
 }
 
@@ -1382,17 +1363,6 @@ th,td{
 .toggle-btn{
 
     background:gray;
-    color:white;
-    border:none;
-    padding:10px 15px;
-    border-radius:10px;
-    cursor:pointer;
-
-}
-
-.delete-btn{
-
-    background:#ff8fb1;
     color:white;
     border:none;
     padding:10px 15px;
@@ -1629,28 +1599,36 @@ table{
     color:#666;
 }
 
-.mark-btn{
-    background:#f5eef2;
-    border:1px solid #ddd;
-    padding:15px 25px;
-    border-radius:30px;
-    cursor:pointer;
-}
-
 .post-actions{
     display:flex;
     align-items:center;
     gap:12px;
 }
 
-.delete-btn{
-    background:#fdecec;
-    border:1px solid #f3c1c1;
-    color:#b42318;
-    padding:15px 25px;
-    border-radius:30px;
-    cursor:pointer;
+.delete-btn {
+   background: #f7b6c9;
+
+    color: #ffffff;
+
+    border: none;
+
+    padding: 11px 20px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
 }
+.delete-btn:hover {
+    background: #ff7fa6;
+}
+
+
 .saved-grid{
     display:flex;
     gap:25px;
@@ -1779,21 +1757,6 @@ table{
 
 #logoutBtn i {
     font-size: 14px;
-}
-.mark-btn {
-    background-color: #f7a8c4;
-    color: #ffffff;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    transition: 0.3s;
-}
-
-.mark-btn:hover {
-    background-color: #f28eb2;
 }
 /* =================================
    NO POSTS MESSAGE

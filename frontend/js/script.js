@@ -560,11 +560,26 @@ if (registerForm) {
             const confirmPassword =
                 document.getElementById("confirmPassword").value;
 
+            const phone =
+                document.getElementById("phone").value;
+
 
             // Check password
             if (password !== confirmPassword) {
 
                 alert("Passwords do not match!");
+
+                return;
+
+            }
+
+
+            // Check phone number (Bangladesh format)
+            if (!isValidBDPhone(phone)) {
+
+                alert(
+                    "Please enter a valid Bangladeshi mobile number (e.g. 01XXXXXXXXX)."
+                );
 
                 return;
 
@@ -634,6 +649,61 @@ if (registerForm) {
 
 
 // ======================================================
+// PHONE NUMBER VALIDATION (Bangladesh)
+// ======================================================
+
+// Bangladesh mobile numbers: 11 digits starting with "01",
+// where the 3rd digit (operator code) is 3-9.
+// Also accepts the +880 / 880 country-code form.
+const BD_PHONE_REGEX =
+    /^(?:\+?880|0)1[3-9]\d{8}$/;
+
+function isValidBDPhone(value) {
+
+    return BD_PHONE_REGEX.test(
+        (value || "").trim()
+    );
+
+}
+
+// Strip anything that isn't a digit (a single leading "+"
+// is allowed) as the user types, so letters/symbols can
+// never end up in a phone field in the first place.
+function restrictToPhoneDigits(input) {
+
+    if (!input) return;
+
+    input.addEventListener(
+        "input",
+        function () {
+
+            const hasPlus =
+                input.value.startsWith("+");
+
+            let digitsOnly =
+                input.value.replace(/[^\d]/g, "");
+
+            input.value =
+                (hasPlus ? "+" : "") + digitsOnly;
+
+        }
+    );
+
+}
+
+[
+    "phone",
+    "contact"
+].forEach(function (fieldId) {
+
+    restrictToPhoneDigits(
+        document.getElementById(fieldId)
+    );
+
+});
+
+
+// ======================================================
 // LOGIN WITH JWT
 // ======================================================
 
@@ -688,10 +758,28 @@ if (loginForm) {
                     await response.json();
 
 
-                alert(data.message);
-
-
                 if (response.ok) {
+
+                    // Admins must use the dedicated Admin Login page
+                    if (
+                        data.user &&
+                        data.user.role === "admin"
+                    ) {
+
+                        alert(
+                            "Admin accounts must log in from the Admin Login page."
+                        );
+
+                        window.location.href =
+                            "admin-login.html";
+
+                        return;
+
+                    }
+
+
+                    alert(data.message);
+
 
                     // Save JWT
                     localStorage.setItem(
@@ -710,6 +798,10 @@ if (loginForm) {
                     // Go dashboard
                     window.location.href =
                         "dashboard.html";
+
+                } else {
+
+                    alert(data.message);
 
                 }
 
@@ -777,6 +869,21 @@ if (postPetForm) {
 
                 alert(
                     "Please select a pet image."
+                );
+
+                return;
+
+            }
+
+
+            // Check phone number (Bangladesh format)
+            const contactValue =
+                document.getElementById("contact").value;
+
+            if (!isValidBDPhone(contactValue)) {
+
+                alert(
+                    "Please enter a valid Bangladeshi mobile number (e.g. 01XXXXXXXXX)."
                 );
 
                 return;
@@ -2521,6 +2628,18 @@ if (adoptionRequestForm) {
                 document.getElementById("message").value.trim();
 
 
+            // Check phone number (Bangladesh format)
+            if (!isValidBDPhone(phone)) {
+
+                alert(
+                    "Please enter a valid Bangladeshi mobile number (e.g. 01XXXXXXXXX)."
+                );
+
+                return;
+
+            }
+
+
             // ===============================
             // CHECK MESSAGE
             // ===============================
@@ -2882,7 +3001,7 @@ async function loadOwnerRequests() {
 
                     <button
                         type="button"
-                        class="delete-btn cancel-reservation-btn"
+                        class="mark-btn cancel-reservation-btn"
                     >
                         Cancel Reservation
                     </button>

@@ -1171,11 +1171,10 @@ if (petGrid) {
             }
 
 
-            // Uploaded image from MongoDB
+            // Uploaded image from Cloudinary
             if (pet.image) {
 
                 imagePath =
-                    API_BASE_URL + "/uploads/" +
                     pet.image;
 
             }
@@ -1621,7 +1620,6 @@ if (myPostsContainer) {
                 if (pet.image) {
 
                     imagePath =
-                        API_BASE_URL + "/uploads/" +
                         pet.image;
 
                 }
@@ -1978,7 +1976,6 @@ if (featuredPetContainer) {
                 if (pet.image) {
 
                     imagePath =
-                        API_BASE_URL + "/uploads/" +
                         pet.image;
 
                 }
@@ -2469,7 +2466,6 @@ if (adoptButton && !isPetOwner && !isAdminUser) {
             if (pet.image) {
 
                 petImage.src =
-                    API_BASE_URL + "/uploads/" +
                     pet.image;
 
             } else {
@@ -2894,7 +2890,7 @@ async function loadOwnerRequests() {
                         ?
                         `
                         <img
-                            src="${API_BASE_URL}/uploads/${request.pet.image}"
+                            src="${request.pet.image}"
                             alt="${petName}"
                         >
                         `
@@ -3402,7 +3398,7 @@ if (
                         ?
                         `
                         <img
-                            src="${API_BASE_URL}/uploads/${request.pet.image}"
+                            src="${request.pet.image}"
                             alt="${petName}"
                         >
                         `

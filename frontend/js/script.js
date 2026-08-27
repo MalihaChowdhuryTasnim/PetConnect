@@ -2,6 +2,18 @@ console.log("Welcome to PetConnect!");
 
 
 // ======================================================
+// API BASE URL
+// ======================================================
+// Change this ONE line when deploying the backend
+// (e.g. to your Render URL: "https://petconnect-backend.onrender.com")
+// Everything else in this file uses API_BASE_URL, never
+// a hardcoded localhost address.
+// ======================================================
+
+const API_BASE_URL = "http://localhost:3000";
+
+
+// ======================================================
 // NAVBAR LOGIN / LOGOUT
 // ======================================================
 
@@ -421,7 +433,7 @@ if (
 
             const response =
                 await fetch(
-                    "http://localhost:3000/ask-ai",
+                    API_BASE_URL + "/ask-ai",
                     {
 
                         method: "POST",
@@ -590,7 +602,7 @@ if (registerForm) {
 
                 const response =
                     await fetch(
-                        "http://localhost:3000/register",
+                        API_BASE_URL + "/register",
                         {
 
                             method: "POST",
@@ -732,7 +744,7 @@ if (loginForm) {
 
                 const response =
                     await fetch(
-                        "http://localhost:3000/login",
+                        API_BASE_URL + "/login",
                         {
 
                             method: "POST",
@@ -970,7 +982,7 @@ if (postPetForm) {
 
                 const response =
                     await fetch(
-                        "http://localhost:3000/post-pet",
+                        API_BASE_URL + "/post-pet",
                         {
 
                             method: "POST",
@@ -1060,7 +1072,7 @@ if (petGrid) {
 
             const response =
                 await fetch(
-                    "http://localhost:3000/pets"
+                    API_BASE_URL + "/pets"
                 );
 
 
@@ -1163,7 +1175,7 @@ if (petGrid) {
             if (pet.image) {
 
                 imagePath =
-                    "http://localhost:3000/uploads/" +
+                    API_BASE_URL + "/uploads/" +
                     pet.image;
 
             }
@@ -1493,7 +1505,7 @@ if (myPostsContainer) {
 
             const response =
                 await fetch(
-                    "http://localhost:3000/my-pets",
+                    API_BASE_URL + "/my-pets",
                     {
 
                         method: "GET",
@@ -1609,7 +1621,7 @@ if (myPostsContainer) {
                 if (pet.image) {
 
                     imagePath =
-                        "http://localhost:3000/uploads/" +
+                        API_BASE_URL + "/uploads/" +
                         pet.image;
 
                 }
@@ -1713,7 +1725,7 @@ if (myPostsContainer) {
 
                                 const adoptResponse =
                                     await fetch(
-                                        "http://localhost:3000/pets/" +
+                                        API_BASE_URL + "/pets/" +
                                         pet._id +
                                         "/adopt",
                                         {
@@ -1800,7 +1812,7 @@ if (myPostsContainer) {
 
                             const deleteResponse =
                                 await fetch(
-                                    "http://localhost:3000/pets/" +
+                                    API_BASE_URL + "/pets/" +
                                     pet._id,
                                     {
 
@@ -1910,7 +1922,7 @@ if (featuredPetContainer) {
         try {
 
             const response = await fetch(
-                "http://localhost:3000/pets"
+                API_BASE_URL + "/pets"
             );
 
             const pets = await response.json();
@@ -1966,7 +1978,7 @@ if (featuredPetContainer) {
                 if (pet.image) {
 
                     imagePath =
-                        "http://localhost:3000/uploads/" +
+                        API_BASE_URL + "/uploads/" +
                         pet.image;
 
                 }
@@ -2054,7 +2066,7 @@ if (petName) {
 
             const response =
                 await fetch(
-                    "http://localhost:3000/pets/" + petId
+                    API_BASE_URL + "/pets/" + petId
                 );
 
 
@@ -2286,7 +2298,7 @@ if (adoptButton && !isPetOwner && !isAdminUser) {
         try {
 
             const response = await fetch(
-                "http://localhost:3000/my-adoption-requests",
+                API_BASE_URL + "/my-adoption-requests",
                 {
                     method: "GET",
                     headers: {
@@ -2457,7 +2469,7 @@ if (adoptButton && !isPetOwner && !isAdminUser) {
             if (pet.image) {
 
                 petImage.src =
-                    "http://localhost:3000/uploads/" +
+                    API_BASE_URL + "/uploads/" +
                     pet.image;
 
             } else {
@@ -2673,7 +2685,7 @@ if (adoptionRequestForm) {
 
                 const response =
                     await fetch(
-                        "http://localhost:3000/adoption-request",
+                        API_BASE_URL + "/adoption-request",
                         {
 
                             method: "POST",
@@ -2802,7 +2814,7 @@ async function loadOwnerRequests() {
     try {
 
         const response = await fetch(
-            "http://localhost:3000/owner-adoption-requests",
+            API_BASE_URL + "/owner-adoption-requests",
             {
                 method: "GET",
 
@@ -2882,7 +2894,7 @@ async function loadOwnerRequests() {
                         ?
                         `
                         <img
-                            src="http://localhost:3000/uploads/${request.pet.image}"
+                            src="${API_BASE_URL}/uploads/${request.pet.image}"
                             alt="${petName}"
                         >
                         `
@@ -3107,7 +3119,7 @@ async function cancelReservation(requestId) {
 
         const response =
             await fetch(
-                "http://localhost:3000/adoption-request/" +
+                API_BASE_URL + "/adoption-request/" +
                 requestId +
                 "/cancel-reservation",
                 {
@@ -3196,7 +3208,7 @@ async function updateAdoptionRequest(
 
         const response =
             await fetch(
-                "http://localhost:3000/adoption-request/" +
+                API_BASE_URL + "/adoption-request/" +
                 requestId +
                 "/status",
                 {
@@ -3281,7 +3293,7 @@ async function loadMyAdoptionRequests() {
 
         const response =
             await fetch(
-                "http://localhost:3000/my-adoption-requests",
+                API_BASE_URL + "/my-adoption-requests",
                 {
 
                     method: "GET",
@@ -3390,7 +3402,7 @@ if (
                         ?
                         `
                         <img
-                            src="http://localhost:3000/uploads/${request.pet.image}"
+                            src="${API_BASE_URL}/uploads/${request.pet.image}"
                             alt="${petName}"
                         >
                         `
@@ -3521,7 +3533,7 @@ async function deleteMyAdoptionRequest(
 
         const response =
             await fetch(
-                "http://localhost:3000/adoption-request/" +
+                API_BASE_URL + "/adoption-request/" +
                 requestId,
                 {
 
@@ -3675,7 +3687,7 @@ async function loadAdminOverview() {
 
         const response =
             await fetch(
-                "http://localhost:3000/admin/overview",
+                API_BASE_URL + "/admin/overview",
                 {
 
                     method: "GET",
@@ -3763,7 +3775,7 @@ async function loadAdminPets() {
 
         const response =
             await fetch(
-                "http://localhost:3000/admin/pets",
+                API_BASE_URL + "/admin/pets",
                 {
 
                     method: "GET",
@@ -3856,7 +3868,7 @@ async function loadAdminPets() {
 
                         const deleteResponse =
                             await fetch(
-                                "http://localhost:3000/admin/pets/" +
+                                API_BASE_URL + "/admin/pets/" +
                                 pet._id,
                                 {
 
@@ -3938,7 +3950,7 @@ async function loadAdminUsers() {
 
         const response =
             await fetch(
-                "http://localhost:3000/admin/users",
+                API_BASE_URL + "/admin/users",
                 {
 
                     method: "GET",
@@ -4053,7 +4065,7 @@ async function loadAdminUsers() {
 
                         const banResponse =
                             await fetch(
-                                "http://localhost:3000/admin/users/" +
+                                API_BASE_URL + "/admin/users/" +
                                 user._id +
                                 "/ban",
                                 {
@@ -4164,7 +4176,7 @@ if (adminLoginForm) {
 
                 const response =
                     await fetch(
-                        "http://localhost:3000/login",
+                        API_BASE_URL + "/login",
                         {
 
                             method: "POST",

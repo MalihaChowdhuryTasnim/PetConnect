@@ -2,6 +2,8 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 
+const cloudinary = require("../config/cloudinary");
+
 const Pet = require("../models/Pet");
 const AdoptionRequest = require("../models/AdoptionRequest");
 const protect = require("../authMiddleware");
@@ -12,25 +14,12 @@ const router = express.Router();
 // ===============================
 // MULTER STORAGE
 // ===============================
+// Files are kept in memory, then uploaded to
+// Cloudinary below — nothing is written to disk,
+// so images survive server restarts/redeploys.
+// ===============================
 
-const storage = multer.diskStorage({
-
-    destination: function (req, file, cb) {
-
-        cb(null, "uploads/");
-
-    },
-
-    filename: function (req, file, cb) {
-
-        cb(
-            null,
-            Date.now() + path.extname(file.originalname)
-        );
-
-    }
-
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
 
@@ -61,6 +50,21 @@ router.post(
             } = req.body;
 
 
+ let imageUrl = "";
+
+            if (req.file) {
+
+                const uploadResult =
+                    await cloudinary.uploader.upload(
+                        `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
+                        { folder: "petconnect" }
+                    );
+
+                imageUrl = uploadResult.secure_url;
+
+            }
+
+
             const pet = new Pet({
 
                 // Logged-in user's ID
@@ -76,9 +80,7 @@ router.post(
                 contact,
                 description,
 
-                image: req.file
-                    ? req.file.filename
-                    : ""
+                image: imageUrl
 
             });
 

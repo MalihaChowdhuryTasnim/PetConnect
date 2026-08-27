@@ -10,7 +10,7 @@ console.log("Welcome to PetConnect!");
 // a hardcoded localhost address.
 // ======================================================
 
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://petconnect-2-i24d.onrender.com";
 
 
 // ======================================================

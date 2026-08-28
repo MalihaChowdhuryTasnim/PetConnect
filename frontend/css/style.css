@@ -658,6 +658,48 @@ nav{
 
 }
 
+.password-field{
+
+    position:relative;
+
+    display:flex;
+
+}
+
+input.password-input{
+
+    width:100%;
+
+    padding-right:45px !important;
+
+    box-sizing:border-box;
+
+}
+
+.toggle-password{
+
+    position:absolute;
+
+    right:15px;
+
+    top:24px;
+
+    transform:translateY(-50%);
+
+    cursor:pointer;
+
+    color:#999;
+
+    font-size:16px;
+
+}
+
+.toggle-password:hover{
+
+    color:#ff9dbb;
+
+}
+
 .login-card button{
 
     padding:15px;
@@ -2418,6 +2460,113 @@ footer {
     .user-message .message-content {
 
         max-width: 85%;
+    }
+
+}
+
+
+/* =========================================
+   ADDITIONAL MOBILE FIXES
+   (pet cards, dashboard stats, admin
+   panel, post-pet form, tables)
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* Pet cards used on Home, Adopt, and
+       Featured sections had a fixed 300px
+       width which overflowed narrow screens
+       once the grid dropped to 1 column. */
+    .pet-card {
+        width: 100%;
+        max-width: 340px;
+    }
+
+    /* Dashboard "My Pets" stat cards
+       (Active Posts etc.) — 4 fixed columns
+       were unreadable on phones. */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .stat-card h2 {
+        font-size: 32px;
+    }
+
+    /* Admin dashboard overview cards —
+       same fixed 4-column issue. */
+    .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .admin-section {
+        width: 92%;
+    }
+
+    .admin-section h1 {
+        font-size: 30px;
+    }
+
+    .admin-section h2 {
+        font-size: 26px;
+        margin-top: 40px;
+    }
+
+    /* Admin tables (Pet Listings, Users) don't
+       reflow on their own — let them scroll
+       horizontally instead of squeezing text
+       or breaking the page width. */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    th, td {
+        padding: 12px 15px;
+    }
+
+    /* Post a Pet form — was locked to 2
+       columns at every screen size. */
+    .post-form {
+        padding: 25px 20px;
+    }
+
+    .post-form form {
+        grid-template-columns: 1fr;
+    }
+
+    .post-form textarea,
+    .post-form button {
+        grid-column: 1 / -1;
+    }
+
+    /* Register page container had a fixed
+       40px padding, too tight on narrow phones
+       alongside the card's own padding. */
+    .register-container {
+        padding: 15px;
+    }
+
+    /* Ask Paws intro heading area */
+    .ai-section {
+        padding: 30px 15px;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .stats-grid,
+    .admin-stats {
+        grid-template-columns: 1fr;
     }
 
 }

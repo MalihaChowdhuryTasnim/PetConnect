@@ -1,7 +1,6 @@
 console.log("Welcome to PetConnect!");
 
 
-
 const API_BASE_URL = "https://petconnect-2-i24d.onrender.com";
 
 
@@ -145,6 +144,44 @@ if (token) {
 
     if (heroPostPetLink)
     heroPostPetLink.href = "post_pet.html";
+
+
+    // Admins don't post pets — hide the
+    // "Post a Pet" nav link(s) for them,
+    // on every page, not just the admin
+    // dashboard's own markup.
+    try {
+
+        const savedUser =
+            localStorage.getItem("user");
+
+        if (savedUser) {
+
+            const currentUser =
+                JSON.parse(savedUser);
+
+            if (currentUser.role === "admin") {
+
+                if (postPetLink) {
+                    postPetLink.style.display = "none";
+                }
+
+                if (heroPostPetLink) {
+                    heroPostPetLink.style.display = "none";
+                }
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Post Pet link role check error:",
+            error
+        );
+
+    }
 
 }
 

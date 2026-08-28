@@ -1519,11 +1519,31 @@ table{
     font-size:60px;
     color:#1d2340;
     margin:10px 0;
+    word-break:break-word;
 }
 
 .welcome-box p{
     color:white;
     font-size:20px;
+}
+
+@media(max-width:600px){
+
+    .welcome-box{
+        padding:25px 20px;
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .welcome-box h1{
+        font-size:32px;
+    }
+
+    .welcome-box p{
+        color:#555;
+        font-size:15px;
+    }
+
 }
 
 .post-btn{
@@ -2043,6 +2063,8 @@ footer {
     margin: 20px auto 0;
 
     background: #ffffff;
+
+    padding: 0;
 
     border-radius: 18px;
 

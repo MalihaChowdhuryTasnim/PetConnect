@@ -37,11 +37,18 @@
             placeholder="Email Address"
             required>
 
-            <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            required>
+            <div class="password-field">
+
+                <input
+                type="password"
+                id="password"
+                class="password-input"
+                placeholder="Password"
+                required>
+
+                <i class="fa-solid fa-eye toggle-password" data-target="password"></i>
+
+            </div>
 
             <button type="submit">
                 Login

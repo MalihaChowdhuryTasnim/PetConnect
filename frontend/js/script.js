@@ -2,8 +2,53 @@ console.log("Welcome to PetConnect!");
 
 
 
-
 const API_BASE_URL = "https://petconnect-2-i24d.onrender.com";
+
+
+// ======================================================
+// PASSWORD SHOW / HIDE TOGGLE
+// ======================================================
+// Works on any page that has a ".password-field" wrapper
+// containing an <input class="password-input"> and an
+// <i class="toggle-password" data-target="INPUT_ID">.
+// ======================================================
+
+const passwordToggles =
+    document.querySelectorAll(".toggle-password");
+
+passwordToggles.forEach(function (icon) {
+
+    icon.addEventListener("click", function () {
+
+        const targetId =
+            icon.getAttribute("data-target");
+
+        const input =
+            document.getElementById(targetId);
+
+        if (!input) {
+            return;
+        }
+
+        if (input.type === "password") {
+
+            input.type = "text";
+
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+
+        } else {
+
+            input.type = "password";
+
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+
+        }
+
+    });
+
+});
 
 
 // ======================================================

@@ -1,14 +1,7 @@
 console.log("Welcome to PetConnect!");
 
 
-// ======================================================
-// API BASE URL
-// ======================================================
-// Change this ONE line when deploying the backend
-// (e.g. to your Render URL: "https://petconnect-backend.onrender.com")
-// Everything else in this file uses API_BASE_URL, never
-// a hardcoded localhost address.
-// ======================================================
+
 
 const API_BASE_URL = "https://petconnect-2-i24d.onrender.com";
 

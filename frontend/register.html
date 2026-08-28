@@ -51,17 +51,31 @@ inputmode="numeric"
 maxlength="14"
 required>
 
+<div class="password-field">
+
 <input
 type="password"
 id="password"
+class="password-input"
 placeholder="Password"
 required>
+
+<i class="fa-solid fa-eye toggle-password" data-target="password"></i>
+
+</div>
+
+<div class="password-field">
 
 <input
 type="password"
 id="confirmPassword"
+class="password-input"
 placeholder="Confirm Password"
 required>
+
+<i class="fa-solid fa-eye toggle-password" data-target="confirmPassword"></i>
+
+</div>
 
 <button type="submit">
 Register
